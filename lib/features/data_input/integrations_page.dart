@@ -22,7 +22,6 @@ class IntegrationsPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: kSurface,
-      appBar: AppBar(title: Text(l10n.integrationsTitle)),
       body: GridView.builder(
         padding: const EdgeInsets.all(24),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

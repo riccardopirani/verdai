@@ -53,7 +53,6 @@ class CompliancePage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: kSurface,
-      appBar: AppBar(title: Text(l10n.complianceTitle)),
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: [

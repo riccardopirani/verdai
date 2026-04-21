@@ -17,32 +17,29 @@ class ReportsListPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: kSurface,
-      appBar: AppBar(
-        title: Text(l10n.reportsListTitle),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
+      body: ListView(
+        padding: const EdgeInsets.all(24),
+        children: [
+          Align(
+            alignment: Alignment.centerRight,
             child: VerdantButton(
               label: l10n.reportsNew,
               onPressed: () => context.go('/reports/new'),
             ),
           ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(24),
-        children: EsgAutomationService.instance
-                .yearOverYear()
-                .every((y) => y.totalKg == 0)
-            ? [
-                Text(
-                  l10n.reportsEmptyState,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ]
-            : [
-                for (final y
-                    in EsgAutomationService.instance.yearOverYear()) ...[
+          const SizedBox(height: 16),
+          ...EsgAutomationService.instance
+                  .yearOverYear()
+                  .every((y) => y.totalKg == 0)
+              ? [
+                  Text(
+                    l10n.reportsEmptyState,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ]
+              : [
+                  for (final y
+                      in EsgAutomationService.instance.yearOverYear()) ...[
                   _ReportTile(
                     title: l10n.reportsGeneratedForYear('${y.year}'),
                     standard: 'CSRD / GRI / ESRS',
@@ -53,6 +50,7 @@ class ReportsListPage extends StatelessWidget {
                   const SizedBox(height: 12),
                 ],
               ],
+        ],
       ),
     );
   }

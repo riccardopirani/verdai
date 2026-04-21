@@ -13,7 +13,6 @@ class SettingsPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: kSurface,
-      appBar: AppBar(title: Text(l10n.settingsTitle)),
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: [

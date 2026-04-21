@@ -12,7 +12,6 @@ class CompanyProfilePage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: kSurface,
-      appBar: AppBar(title: Text(l10n.companyProfileTitle)),
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: [

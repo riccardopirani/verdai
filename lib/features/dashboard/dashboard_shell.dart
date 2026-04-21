@@ -3,11 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:verdant/l10n/app_localizations.dart';
 
-import '../../core/theme/colors.dart';
 import '../../core/utils/responsive.dart';
 import '../../features/auth/auth_provider.dart';
 import '../../shared/widgets/language_menu_button.dart';
-import '../../shared/widgets/verdant_logo.dart';
+import 'banani_dashboard_tokens.dart';
+import 'dashboard_provider.dart';
+import 'widgets/banani_shell_header.dart';
 
 class DashboardShell extends ConsumerWidget {
   const DashboardShell({
@@ -29,32 +30,13 @@ class DashboardShell extends ConsumerWidget {
   ];
 
   static const _icons = <IconData>[
-    Icons.home_outlined,
-    Icons.auto_graph_outlined,
+    Icons.dashboard_outlined,
+    Icons.storage_outlined,
     Icons.description_outlined,
-    Icons.verified_outlined,
-    Icons.hub_outlined,
+    Icons.verified_user_outlined,
+    Icons.power_outlined,
     Icons.settings_outlined,
   ];
-
-  String _label(AppLocalizations l, String path) {
-    switch (path) {
-      case '/dashboard':
-        return l.navDashboard;
-      case '/emissions':
-        return l.navEmissions;
-      case '/reports':
-        return l.navReports;
-      case '/compliance':
-        return l.navCompliance;
-      case '/integrations':
-        return l.navIntegrations;
-      case '/settings':
-        return l.navSettings;
-      default:
-        return path;
-    }
-  }
 
   String _short(AppLocalizations l, String path) {
     switch (path) {
@@ -73,147 +55,140 @@ class DashboardShell extends ConsumerWidget {
     }
   }
 
+  String _mobileTitle(AppLocalizations l) {
+    if (location.startsWith('/settings/billing')) return l.billingTitle;
+    if (location.startsWith('/settings/company')) return l.companyProfileTitle;
+    if (location.startsWith('/settings/manual-input')) return l.settingsManualFull;
+    if (location.startsWith('/settings')) return l.settingsTitle;
+    if (location.startsWith('/reports/new')) return l.reportGenTitle;
+    if (location.startsWith('/reports')) return l.reportsListTitle;
+    if (location.startsWith('/emissions')) return l.emissionsUploadTitle;
+    if (location.startsWith('/compliance')) return l.complianceTitle;
+    if (location.startsWith('/integrations')) return l.integrationsTitle;
+    if (location.startsWith('/dashboard')) return l.navDashboard;
+    return l.navDashboard;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final mobile = Responsive.isMobile(context);
     final desktop = Responsive.isDesktop(context);
     final user = ref.watch(currentUserProvider);
+    final kpi = ref.watch(dashboardKpiProvider);
+    final reportsUsed = kpi.valueOrNull?.reportsUsed ?? 0;
+    final reportsLimit = kpi.valueOrNull?.reportsLimit ?? 1;
+    final email = user?.email ?? l10n.account;
+    final initial = email.isNotEmpty ? email[0].toUpperCase() : l10n.userFallback;
 
     if (mobile) {
       return Scaffold(
-        backgroundColor: kSurface,
-        body: child,
-        bottomNavigationBar: NavigationBar(
-          height: 68,
-          backgroundColor: kSurfaceCard,
-          indicatorColor: kPrimaryGreen.withValues(alpha: 0.2),
-          selectedIndex: _indexForPath(location),
-          onDestinationSelected: (i) => context.go(_paths[i]),
-          destinations: [
-            for (var i = 0; i < 5; i++)
-              NavigationDestination(
-                icon: Icon(_icons[i]),
-                label: _short(l10n, _paths[i]),
-              ),
+        backgroundColor: BananiDash.background,
+        appBar: AppBar(
+          backgroundColor: BananiDash.background,
+          foregroundColor: BananiDash.foreground,
+          elevation: 0,
+          title: Text(
+            _mobileTitle(l10n),
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 18,
+              color: BananiDash.foreground,
+            ),
+          ),
+          actions: const [
+            LanguageMenuButton(compact: true),
+            SizedBox(width: 4),
           ],
         ),
-        appBar: AppBar(
-          title: Row(
-            children: [
-              const VerdantLogo(size: 28),
-              const SizedBox(width: 10),
-              Text(l10n.brandName, style: Theme.of(context).textTheme.headlineMedium),
+        drawer: Drawer(
+          backgroundColor: BananiDash.surface,
+          child: SafeArea(
+            child: _SidebarNav(
+              l10n: l10n,
+              location: location,
+              expanded: true,
+              email: email,
+              initial: initial,
+              scrollable: true,
+              reportsUsed: reportsUsed,
+              reportsLimit: reportsLimit,
+            ),
+          ),
+        ),
+        body: child,
+        bottomNavigationBar: NavigationBarTheme(
+          data: NavigationBarThemeData(
+            backgroundColor: BananiDash.surface,
+            indicatorColor: BananiDash.primary.withValues(alpha: 0.15),
+            labelTextStyle: WidgetStateProperty.resolveWith((s) {
+              final selected = s.contains(WidgetState.selected);
+              return TextStyle(
+                fontSize: 11,
+                fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+                color: selected ? BananiDash.primary : BananiDash.mutedForeground,
+              );
+            }),
+            iconTheme: WidgetStateProperty.resolveWith((s) {
+              final selected = s.contains(WidgetState.selected);
+              return IconThemeData(
+                color: selected ? BananiDash.primary : BananiDash.mutedForeground,
+                size: 22,
+              );
+            }),
+          ),
+          child: NavigationBar(
+            height: 68,
+            selectedIndex: _indexForPath(location).clamp(0, 5),
+            onDestinationSelected: (i) => context.go(_paths[i]),
+            destinations: [
+              for (var i = 0; i < 6; i++)
+                NavigationDestination(
+                  icon: Icon(_icons[i]),
+                  label: _short(l10n, _paths[i]),
+                ),
             ],
           ),
-          actions: [
-            const LanguageMenuButton(compact: true),
-            IconButton(
-              onPressed: () => context.go('/settings'),
-              icon: const Icon(Icons.settings_outlined),
-            ),
-          ],
         ),
       );
     }
 
+    final sidebarW = desktop ? BananiDash.sidebarWidth : 72.0;
+
     return Scaffold(
-      backgroundColor: kSurface,
+      backgroundColor: BananiDash.background,
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(
-            width: desktop ? 280 : 88,
+            width: sidebarW,
             child: ColoredBox(
-              color: kSurfaceCard,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 24),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        const VerdantLogo(size: 32),
-                        if (desktop) ...[
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              l10n.brandName,
-                              style: Theme.of(context).textTheme.headlineMedium,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                  if (desktop)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      child: const LanguageMenuButton(),
-                    ),
-                  const SizedBox(height: 8),
-                  if (desktop)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        user?.email ?? l10n.account,
-                        style: Theme.of(context).textTheme.bodySmall,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  const SizedBox(height: 24),
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        for (var i = 0; i < _paths.length; i++)
-                          _SideTile(
-                            icon: _icons[i],
-                            label: _label(l10n, _paths[i]),
-                            path: _paths[i],
-                            selected: location == _paths[i] ||
-                                (_paths[i] != '/dashboard' &&
-                                    location.startsWith(_paths[i])),
-                            expanded: desktop,
-                          ),
-                      ],
-                    ),
-                  ),
-                  if (desktop)
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l10n.planStarterSidebar,
-                            style: Theme.of(context).textTheme.labelLarge,
-                          ),
-                          const SizedBox(height: 8),
-                          const LinearProgressIndicator(
-                            value: 2 / 3,
-                            color: kPrimaryGreen,
-                            backgroundColor: kBorderSubtle,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            l10n.reportsUsedProgress(2, 3),
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                          const SizedBox(height: 12),
-                          OutlinedButton(
-                            onPressed: () => context.go('/pricing'),
-                            child: Text(l10n.upgradeGrowth),
-                          ),
-                        ],
-                      ),
-                    ),
-                ],
+              color: BananiDash.surface,
+              child: DecoratedBox(
+                decoration: const BoxDecoration(
+                  border: Border(right: BorderSide(color: BananiDash.border)),
+                ),
+                child: _SidebarNav(
+                  l10n: l10n,
+                  location: location,
+                  expanded: desktop,
+                  email: email,
+                  initial: initial,
+                  reportsUsed: reportsUsed,
+                  reportsLimit: reportsLimit,
+                ),
               ),
             ),
           ),
-          Expanded(child: child),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                BananiShellHeader(location: location),
+                Expanded(child: child),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -223,15 +198,247 @@ class DashboardShell extends ConsumerWidget {
     for (var i = 0; i < _paths.length; i++) {
       if (path == _paths[i] ||
           (path.startsWith(_paths[i]) && _paths[i] != '/dashboard')) {
-        return i.clamp(0, 4);
+        return i;
       }
     }
     return 0;
   }
 }
 
-class _SideTile extends StatelessWidget {
-  const _SideTile({
+class _SidebarNav extends StatelessWidget {
+  const _SidebarNav({
+    required this.l10n,
+    required this.location,
+    required this.expanded,
+    required this.email,
+    required this.initial,
+    required this.reportsUsed,
+    required this.reportsLimit,
+    this.scrollable = false,
+  });
+
+  final AppLocalizations l10n;
+  final String location;
+  final bool expanded;
+  final String email;
+  final String initial;
+  final int reportsUsed;
+  final int reportsLimit;
+  final bool scrollable;
+
+  bool _selected(String path) {
+    if (path == '/dashboard') return location == '/dashboard';
+    return location.startsWith(path);
+  }
+
+  Widget _logoRow() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(expanded ? 16 : 12, 16, 16, expanded ? 16 : 12),
+      child: Row(
+        children: [
+          Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color: BananiDash.primary,
+              borderRadius: BorderRadius.circular(BananiDash.radiusMd),
+            ),
+            alignment: Alignment.center,
+            child: const Icon(Icons.eco, size: 18, color: BananiDash.onPrimary),
+          ),
+          if (expanded) ...[
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                l10n.brandName,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20,
+                  color: BananiDash.foreground,
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _linkTiles() {
+    return [
+      for (var i = 0; i < DashboardShell._paths.length; i++)
+        _SideNavLink(
+          icon: DashboardShell._icons[i],
+          label: _navLabel(l10n, DashboardShell._paths[i]),
+          path: DashboardShell._paths[i],
+          selected: _selected(DashboardShell._paths[i]),
+          expanded: expanded,
+        ),
+    ];
+  }
+
+  Widget _planAndUser(BuildContext context) {
+    if (!expanded) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: Center(
+          child: CircleAvatar(
+            radius: 16,
+            backgroundColor: BananiDash.input,
+            foregroundColor: BananiDash.foreground,
+            child: Text(initial, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+          ),
+        ),
+      );
+    }
+
+    final progress = reportsLimit <= 0 ? 0.0 : (reportsUsed / reportsLimit).clamp(0.0, 1.0);
+
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: BananiDash.muted,
+              borderRadius: BorderRadius.circular(BananiDash.radiusLg),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      l10n.planStarterSidebar,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: BananiDash.foreground,
+                      ),
+                    ),
+                    Text(
+                      l10n.reportsUsedProgress(reportsUsed, reportsLimit),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: BananiDash.mutedForeground,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(999),
+                  child: LinearProgressIndicator(
+                    value: progress,
+                    minHeight: 8,
+                    color: BananiDash.primary,
+                    backgroundColor: BananiDash.border,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                FilledButton(
+                  onPressed: () => context.go('/settings/billing'),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: BananiDash.primary,
+                    foregroundColor: BananiDash.onPrimary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(BananiDash.radiusMd),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                  ),
+                  child: Text(l10n.upgradeGrowth),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 16,
+                backgroundColor: BananiDash.input,
+                foregroundColor: BananiDash.foreground,
+                child: Text(initial, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  email,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: BananiDash.foreground,
+                  ),
+                ),
+              ),
+              const LanguageMenuButton(compact: true),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (scrollable) {
+      return SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _logoRow(),
+            ..._linkTiles(),
+            _planAndUser(context),
+          ],
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _logoRow(),
+        Expanded(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: _linkTiles(),
+          ),
+        ),
+        _planAndUser(context),
+      ],
+    );
+  }
+
+  String _navLabel(AppLocalizations l, String path) {
+    switch (path) {
+      case '/dashboard':
+        return l.navDashboard;
+      case '/emissions':
+        return l.navEmissions;
+      case '/reports':
+        return l.navReports;
+      case '/compliance':
+        return l.navCompliance;
+      case '/integrations':
+        return l.integrationsTitle;
+      case '/settings':
+        return l.navSettings;
+      default:
+        return path;
+    }
+  }
+
+}
+
+class _SideNavLink extends StatelessWidget {
+  const _SideNavLink({
     required this.icon,
     required this.label,
     required this.path,
@@ -247,42 +454,52 @@ class _SideTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bg = selected ? kPrimaryGreen.withValues(alpha: 0.12) : Colors.transparent;
-    final border = selected
-        ? const Border(left: BorderSide(color: kPrimaryGreen, width: 3))
-        : null;
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: Material(
-        color: bg,
-        child: InkWell(
-          onTap: () => context.go(path),
-          child: Container(
-            decoration: BoxDecoration(border: border),
-            padding: EdgeInsets.symmetric(
-              horizontal: expanded ? 20 : 16,
-              vertical: 14,
-            ),
-            child: Row(
-              children: [
-                Icon(icon, color: selected ? kPrimaryGreen : kTextMuted),
-                if (expanded) ...[
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      label,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontSize: 15,
-                            color: selected ? kTextPrimary : kTextSecondary,
-                          ),
+    final bg = selected ? BananiDash.primary.withValues(alpha: 0.1) : Colors.transparent;
+    final fg = selected ? BananiDash.primary : BananiDash.mutedForeground;
+
+    final row = Material(
+      color: bg,
+      borderRadius: BorderRadius.circular(BananiDash.radiusMd),
+      child: InkWell(
+        onTap: () => context.go(path),
+        borderRadius: BorderRadius.circular(BananiDash.radiusMd),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: expanded ? 12 : 10, vertical: 10),
+          child: Row(
+            children: [
+              Icon(icon, size: 18, color: fg),
+              if (expanded) ...[
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: fg,
                     ),
                   ),
-                ],
+                ),
               ],
-            ),
+            ],
           ),
         ),
       ),
+    );
+
+    if (!expanded) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+        child: Tooltip(
+          message: label,
+          child: row,
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      child: row,
     );
   }
 }

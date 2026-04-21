@@ -61,23 +61,27 @@ class _UploadPageState extends State<UploadPage>
 
     return Scaffold(
       backgroundColor: kSurface,
-      appBar: AppBar(
-        title: Text(l10n.emissionsUploadTitle),
-        bottom: TabBar(
-          controller: _tabs,
-          labelColor: kPrimaryGreen,
-          unselectedLabelColor: kTextMuted,
-          indicatorColor: kPrimaryGreen,
-          tabs: [
-            Tab(text: l10n.tabUploadExcel),
-            Tab(text: l10n.tabManual),
-            Tab(text: l10n.tabIntegrations),
-          ],
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabs,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Material(
+            color: kSurfaceCard,
+            child: TabBar(
+              controller: _tabs,
+              labelColor: kPrimaryGreen,
+              unselectedLabelColor: kTextMuted,
+              indicatorColor: kPrimaryGreen,
+              tabs: [
+                Tab(text: l10n.tabUploadExcel),
+                Tab(text: l10n.tabManual),
+                Tab(text: l10n.tabIntegrations),
+              ],
+            ),
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabs,
+              children: [
           ListView(
             padding: const EdgeInsets.all(24),
             children: [
@@ -159,6 +163,9 @@ class _UploadPageState extends State<UploadPage>
           ),
           const ManualInputPage(embed: true),
           _IntegrationsPlaceholder(l10n: l10n),
+              ],
+            ),
+          ),
         ],
       ),
     );

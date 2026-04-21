@@ -106,7 +106,6 @@ class _ReportGeneratorPageState extends State<ReportGeneratorPage> {
 
     return Scaffold(
       backgroundColor: kSurface,
-      appBar: AppBar(title: Text(l10n.reportGenTitle)),
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: [

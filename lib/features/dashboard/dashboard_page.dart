@@ -1,118 +1,182 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:verdant/l10n/app_localizations.dart';
 
-import '../../core/theme/colors.dart';
-import '../../core/theme/typography.dart';
 import '../../core/utils/responsive.dart';
-import '../../features/auth/auth_provider.dart';
-import '../../shared/widgets/status_badge.dart';
-import '../../shared/widgets/verdant_card.dart';
+import 'banani_dashboard_tokens.dart';
 import 'dashboard_provider.dart';
-import 'widgets/compliance_status.dart';
-import 'widgets/emissions_chart.dart';
-import 'widgets/esg_score_card.dart';
 import 'widgets/quick_actions.dart';
 
 class DashboardPage extends ConsumerWidget {
   const DashboardPage({super.key});
+
+  static String _esgGrade(double score) {
+    if (score >= 90) return 'A+';
+    if (score >= 85) return 'A';
+    if (score >= 78) return 'A-';
+    if (score >= 72) return 'B+';
+    if (score >= 65) return 'B';
+    if (score >= 58) return 'B-';
+    if (score >= 50) return 'C+';
+    if (score >= 42) return 'C';
+    return 'C-';
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final kpiAsync = ref.watch(dashboardKpiProvider);
     final mobile = Responsive.isMobile(context);
-    final user = ref.watch(currentUserProvider);
+    final months = List.generate(12, (i) => DateFormat.MMM(Localizations.localeOf(context).toString()).format(DateTime(2024, i + 1)));
 
-    return Scaffold(
-      backgroundColor: kSurface,
-      body: kpiAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (_, __) => Center(child: Text(l10n.dashLoadingError)),
+    return ColoredBox(
+      color: BananiDash.background,
+      child: kpiAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator(color: BananiDash.primary)),
+        error: (_, __) => Center(child: Text(l10n.dashLoadingError, style: const TextStyle(color: BananiDash.foreground))),
         data: (k) {
-          return CustomScrollView(
-            slivers: [
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(24, 20, 24, 8),
-                sliver: SliverToBoxAdapter(
-                  child: _Header(l10n: l10n, email: user?.email),
+          final co2Fmt = NumberFormat.decimalPattern(Localizations.localeOf(context).toString());
+          final reportsLeft = (k.reportsLimit - k.reportsUsed).clamp(0, k.reportsLimit);
+
+          final kpiRow = _KpiFourUp(
+            mobile: mobile,
+            children: [
+              _BananiKpiCard(
+                label: l10n.dashEsgCardTitle,
+                value: _esgGrade(k.esgScore),
+                icon: Icons.star_outline,
+                iconBg: BananiDash.primaryMuted(0.1),
+                iconColor: BananiDash.primary,
+                footer: Row(
+                  children: [
+                    const Icon(Icons.trending_up, size: 14, color: BananiDash.primary),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        l10n.dashEsgDelta,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: BananiDash.primary,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SliverPadding(
-                padding: const EdgeInsets.all(24),
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate([
-                    if (mobile) ...[
-                      EsgScoreCard(score: k.esgScore),
-                      const SizedBox(height: 16),
-                      _Co2Card(l10n: l10n, tons: k.co2Tons),
-                      const SizedBox(height: 16),
-                      ComplianceStatusCard(progress: k.complianceProgress),
-                      const SizedBox(height: 16),
-                      _ReportQuotaCard(
-                        l10n: l10n,
-                        used: k.reportsUsed,
-                        limit: k.reportsLimit,
+              _BananiKpiCard(
+                label: l10n.dashCo2Title,
+                value: co2Fmt.format(k.co2Tons.round()),
+                valueSuffix: ' t',
+                icon: Icons.cloud_outlined,
+                iconBg: BananiDash.secondaryMuted(0.1),
+                iconColor: BananiDash.secondary,
+                footer: Row(
+                  children: [
+                    const Icon(Icons.trending_down, size: 14, color: BananiDash.danger),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        l10n.dashCo2Delta,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: BananiDash.danger,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ] else
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(child: EsgScoreCard(score: k.esgScore)),
-                          const SizedBox(width: 16),
-                          Expanded(child: _Co2Card(l10n: l10n, tons: k.co2Tons)),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: ComplianceStatusCard(
-                              progress: k.complianceProgress,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: _ReportQuotaCard(
-                              l10n: l10n,
-                              used: k.reportsUsed,
-                              limit: k.reportsLimit,
-                            ),
-                          ),
-                        ],
-                      ),
-                    const SizedBox(height: 24),
-                    if (mobile) ...[
-                      const EmissionsChart(),
-                      const SizedBox(height: 16),
-                      _CategoryDonut(l10n: l10n),
-                    ] else
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Expanded(flex: 6, child: EmissionsChart()),
-                          const SizedBox(width: 16),
-                          Expanded(flex: 4, child: _CategoryDonut(l10n: l10n)),
-                        ],
-                      ),
-                    const SizedBox(height: 24),
-                    if (mobile) ...[
-                      _RecentReports(l10n: l10n),
-                      const SizedBox(height: 16),
-                      _AlertsPreview(l10n: l10n),
-                    ] else
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(child: _RecentReports(l10n: l10n)),
-                          const SizedBox(width: 16),
-                          Expanded(child: _AlertsPreview(l10n: l10n)),
-                        ],
-                      ),
-                    const SizedBox(height: 24),
-                    const QuickActions(),
-                  ]),
+                    ),
+                  ],
                 ),
+              ),
+              _BananiKpiCard(
+                label: l10n.complianceTitle,
+                value: '${(k.complianceProgress * 100).round()}%',
+                icon: Icons.verified_user_outlined,
+                iconBg: BananiDash.primaryMuted(0.1),
+                iconColor: BananiDash.primary,
+                footer: Row(
+                  children: [
+                    const Icon(Icons.trending_up, size: 14, color: BananiDash.primary),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        l10n.reportDataCompleteness,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: BananiDash.primary,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              _BananiKpiCard(
+                label: l10n.dashReportsTitle,
+                value: '$reportsLeft',
+                valueSuffix: ' / ${k.reportsLimit}',
+                icon: Icons.description_outlined,
+                iconBg: BananiDash.warningMuted(0.1),
+                iconColor: BananiDash.warning,
               ),
             ],
+          );
+
+          final chartAndScopes = mobile
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _EmissionsBarsCard(l10n: l10n, months: months),
+                    const SizedBox(height: 24),
+                    _ScopesCard(l10n: l10n),
+                  ],
+                )
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 2, child: _EmissionsBarsCard(l10n: l10n, months: months)),
+                    const SizedBox(width: 24),
+                    Expanded(child: _ScopesCard(l10n: l10n)),
+                  ],
+                );
+
+          final lower = mobile
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _RecentAndAlertsColumn(l10n: l10n),
+                    const SizedBox(height: 24),
+                    _QuickActionsPanel(l10n: l10n),
+                  ],
+                )
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 2, child: _RecentAndAlertsColumn(l10n: l10n)),
+                    const SizedBox(width: 24),
+                    Expanded(child: _QuickActionsPanel(l10n: l10n)),
+                  ],
+                );
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                kpiRow,
+                const SizedBox(height: 24),
+                chartAndScopes,
+                const SizedBox(height: 24),
+                lower,
+              ],
+            ),
           );
         },
       ),
@@ -120,68 +184,330 @@ class DashboardPage extends ConsumerWidget {
   }
 }
 
-class _Header extends StatelessWidget {
-  const _Header({required this.l10n, this.email});
+class _KpiFourUp extends StatelessWidget {
+  const _KpiFourUp({required this.mobile, required this.children});
 
-  final AppLocalizations l10n;
-  final String? email;
+  final bool mobile;
+  final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
-    final initial = (email?.isNotEmpty == true)
-        ? email![0].toUpperCase()
-        : l10n.userFallback;
+    if (mobile) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          for (var i = 0; i < children.length; i++) ...[
+            if (i > 0) const SizedBox(height: 16),
+            children[i],
+          ],
+        ],
+      );
+    }
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (var i = 0; i < children.length; i++) ...[
+          if (i > 0) const SizedBox(width: 24),
+          Expanded(child: children[i]),
+        ],
+      ],
+    );
+  }
+}
 
+class _BananiKpiCard extends StatelessWidget {
+  const _BananiKpiCard({
+    required this.label,
+    required this.value,
+    required this.icon,
+    required this.iconBg,
+    required this.iconColor,
+    this.valueSuffix = '',
+    this.footer,
+  });
+
+  final String label;
+  final String value;
+  final String valueSuffix;
+  final IconData icon;
+  final Color iconBg;
+  final Color iconColor;
+  final Widget? footer;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: BananiDash.surface,
+        borderRadius: BorderRadius.circular(BananiDash.radiusLg),
+        border: Border.all(color: BananiDash.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: BananiDash.mutedForeground,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: iconBg,
+                  borderRadius: BorderRadius.circular(BananiDash.radiusMd),
+                ),
+                child: Icon(icon, size: 20, color: iconColor),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w700,
+                  color: BananiDash.foreground,
+                ),
+              ),
+              if (valueSuffix.isNotEmpty)
+                Text(
+                  valueSuffix,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: BananiDash.mutedForeground,
+                  ),
+                ),
+            ],
+          ),
+          if (footer != null) ...[
+            const SizedBox(height: 8),
+            footer!,
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Stacked bar visualization (Banani-style); heights mirror export proportions.
+class _EmissionsBarsCard extends StatelessWidget {
+  const _EmissionsBarsCard({required this.l10n, required this.months});
+
+  final AppLocalizations l10n;
+  final List<String> months;
+
+  static const _bars = <(double, double)>[
+    (0.45, 0.30),
+    (0.60, 0.45),
+    (0.55, 0.40),
+    (0.70, 0.55),
+    (0.65, 0.50),
+    (0.50, 0.35),
+    (0.40, 0.25),
+    (0.55, 0.40),
+    (0.60, 0.45),
+    (0.45, 0.30),
+    (0.30, 0.15),
+    (0.25, 0.10),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: BananiDash.surface,
+        borderRadius: BorderRadius.circular(BananiDash.radiusLg),
+        border: Border.all(color: BananiDash.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            l10n.navEmissions,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: BananiDash.foreground,
+            ),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 256,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                for (final h in _bars)
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: _StackedBar(ghostFrac: h.$1, solidFrac: h.$2),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Container(
+            padding: const EdgeInsets.only(top: 12),
+            decoration: const BoxDecoration(
+              border: Border(top: BorderSide(color: BananiDash.border)),
+            ),
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              spacing: 8,
+              runSpacing: 4,
+              children: [
+                for (final m in months)
+                  Text(
+                    m,
+                    style: const TextStyle(fontSize: 12, color: BananiDash.mutedForeground),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StackedBar extends StatelessWidget {
+  const _StackedBar({required this.ghostFrac, required this.solidFrac});
+
+  final double ghostFrac;
+  final double solidFrac;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, c) {
+        final h = c.maxHeight;
+        return ClipRRect(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(BananiDash.radiusSm)),
+          child: ColoredBox(
+            color: BananiDash.border,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    width: double.infinity,
+                    height: h * ghostFrac,
+                    color: BananiDash.primaryMuted(0.4),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    width: double.infinity,
+                    height: h * solidFrac,
+                    decoration: BoxDecoration(
+                      color: BananiDash.primary,
+                      boxShadow: BananiDash.primaryBarGlow,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _ScopesCard extends StatelessWidget {
+  const _ScopesCard({required this.l10n});
+
+  final AppLocalizations l10n;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: BananiDash.surface,
+        borderRadius: BorderRadius.circular(BananiDash.radiusLg),
+        border: Border.all(color: BananiDash.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            l10n.dashBreakdownTitle,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: BananiDash.foreground,
+            ),
+          ),
+          const SizedBox(height: 24),
+          _ScopeRow(title: l10n.scope1, share: '35%', ring: BananiDash.primary),
+          const SizedBox(height: 24),
+          _ScopeRow(title: l10n.scope2, share: '25%', ring: BananiDash.secondary),
+          const SizedBox(height: 24),
+          _ScopeRow(title: l10n.scope3, share: '40%', ring: BananiDash.warning),
+        ],
+      ),
+    );
+  }
+}
+
+class _ScopeRow extends StatelessWidget {
+  const _ScopeRow({
+    required this.title,
+    required this.share,
+    required this.ring,
+  });
+
+  final String title;
+  final String share;
+  final Color ring;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
+        Container(
+          width: 64,
+          height: 64,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: ring, width: 4),
+          ),
+        ),
+        const SizedBox(width: 16),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                l10n.dashTitle,
-                style: Theme.of(context).textTheme.headlineLarge,
+                title,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: BananiDash.foreground,
+                ),
               ),
               Text(
-                l10n.dashBreadcrumb,
-                style: Theme.of(context).textTheme.bodySmall,
+                share,
+                style: const TextStyle(fontSize: 12, color: BananiDash.mutedForeground),
               ),
             ],
-          ),
-        ),
-        SizedBox(
-          width: 200,
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: l10n.searchHint,
-              prefixIcon: const Icon(Icons.search, color: kTextMuted),
-              isDense: true,
-              filled: true,
-              fillColor: kSurfaceCard,
-            ),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Stack(
-          clipBehavior: Clip.none,
-          children: [
-            IconButton(
-              onPressed: () => context.go('/compliance'),
-              icon: const Icon(Icons.notifications_outlined),
-            ),
-            const Positioned(
-              right: 8,
-              top: 8,
-              child: _NotifBadge(count: '2'),
-            ),
-          ],
-        ),
-        const SizedBox(width: 8),
-        CircleAvatar(
-          backgroundColor: kPrimaryGreen.withValues(alpha: 0.3),
-          child: Text(
-            initial,
-            style: const TextStyle(color: kTextPrimary),
           ),
         ),
       ],
@@ -189,338 +515,215 @@ class _Header extends StatelessWidget {
   }
 }
 
-class _NotifBadge extends StatelessWidget {
-  const _NotifBadge({required this.count});
-  final String count;
+class _RecentAndAlertsColumn extends StatelessWidget {
+  const _RecentAndAlertsColumn({required this.l10n});
+
+  final AppLocalizations l10n;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          l10n.dashRecentReports,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            color: BananiDash.foreground,
+          ),
+        ),
+        const SizedBox(height: 12),
+        _ReportListTile(
+          title: l10n.reportRow1Title,
+          subtitle: l10n.stdCsrd,
+          badge: l10n.statusPublished,
+        ),
+        const SizedBox(height: 12),
+        _ReportListTile(
+          title: l10n.reportRow2Title,
+          subtitle: l10n.stdIssb,
+          badge: l10n.statusPublished,
+        ),
+        const SizedBox(height: 32),
+        Text(
+          l10n.dashAlerts,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            color: BananiDash.foreground,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: BananiDash.warningMuted(0.05),
+            borderRadius: BorderRadius.circular(BananiDash.radiusLg),
+            border: Border.all(color: BananiDash.warning.withValues(alpha: 0.2)),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(Icons.warning_amber_rounded, color: BananiDash.warning, size: 20),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.alertRow1Title,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: BananiDash.onWarning,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.alertRow1Sub,
+                      style: const TextStyle(fontSize: 12, color: BananiDash.mutedForeground),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: BananiDash.surface,
+            borderRadius: BorderRadius.circular(BananiDash.radiusLg),
+            border: Border.all(color: BananiDash.border),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(Icons.info_outline, color: BananiDash.secondary, size: 20),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.alertRow2Title,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: BananiDash.foreground,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.alertRow2Sub,
+                      style: const TextStyle(fontSize: 12, color: BananiDash.mutedForeground),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ReportListTile extends StatelessWidget {
+  const _ReportListTile({
+    required this.title,
+    required this.subtitle,
+    required this.badge,
+  });
+
+  final String title;
+  final String subtitle;
+  final String badge;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: const BoxDecoration(
-        color: kError,
-        shape: BoxShape.circle,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: BananiDash.surface,
+        borderRadius: BorderRadius.circular(BananiDash.radiusLg),
+        border: Border.all(color: BananiDash.border),
       ),
-      constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
-      child: Text(
-        count,
-        textAlign: TextAlign.center,
-        style: const TextStyle(fontSize: 10, color: kTextPrimary),
-      ),
-    );
-  }
-}
-
-class _Co2Card extends StatelessWidget {
-  const _Co2Card({required this.l10n, required this.tons});
-
-  final AppLocalizations l10n;
-  final double tons;
-
-  @override
-  Widget build(BuildContext context) {
-    return VerdantCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Row(
-            children: [
-              const Icon(Icons.eco, color: kLeafAccent),
-              const SizedBox(width: 8),
-              Text(l10n.dashCo2Title,
-                  style: Theme.of(context).textTheme.titleLarge),
-            ],
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: BananiDash.muted,
+              borderRadius: BorderRadius.circular(BananiDash.radiusMd),
+            ),
+            child: const Icon(Icons.description_outlined, color: BananiDash.mutedForeground),
           ),
-          const SizedBox(height: 8),
-          Text(
-            l10n.dashCo2TonsFmt(tons.toStringAsFixed(1)),
-            style: verdantMono(24, weight: FontWeight.w600),
-          ),
-          Text(
-            l10n.dashCo2Delta,
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(color: kSuccess),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ReportQuotaCard extends StatelessWidget {
-  const _ReportQuotaCard({
-    required this.l10n,
-    required this.used,
-    required this.limit,
-  });
-
-  final AppLocalizations l10n;
-  final int used;
-  final int limit;
-
-  @override
-  Widget build(BuildContext context) {
-    final left = (limit - used).clamp(0, limit);
-    return VerdantCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            l10n.dashReportsTitle,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '$used / $limit',
-            style: verdantMono(24, weight: FontWeight.w600),
-          ),
-          const SizedBox(height: 8),
-          LinearProgressIndicator(
-            value: limit == 0 ? 0 : used / limit,
-            color: kPrimaryGreen,
-            backgroundColor: kBorderSubtle,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            l10n.dashReportsLeft('$left'),
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CategoryDonut extends StatelessWidget {
-  const _CategoryDonut({required this.l10n});
-
-  final AppLocalizations l10n;
-
-  @override
-  Widget build(BuildContext context) {
-    return VerdantCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            l10n.dashBreakdownTitle,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            height: 200,
-            child: PieChart(
-              PieChartData(
-                sectionsSpace: 2,
-                centerSpaceRadius: 48,
-                sections: [
-                  PieChartSectionData(
-                    color: kPrimaryGreen,
-                    value: 45,
-                    title: '45%',
-                    radius: 50,
-                    titleStyle:
-                        const TextStyle(color: kTextPrimary, fontSize: 11),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: BananiDash.foreground,
                   ),
-                  PieChartSectionData(
-                    color: kLeafAccent,
-                    value: 28,
-                    title: '28%',
-                    radius: 50,
-                    titleStyle:
-                        const TextStyle(color: kDeepForest, fontSize: 11),
-                  ),
-                  PieChartSectionData(
-                    color: kInfo,
-                    value: 18,
-                    title: '18%',
-                    radius: 50,
-                    titleStyle:
-                        const TextStyle(color: kTextPrimary, fontSize: 11),
-                  ),
-                  PieChartSectionData(
-                    color: kWarning,
-                    value: 9,
-                    title: '9%',
-                    radius: 50,
-                    titleStyle:
-                        const TextStyle(color: kDeepForest, fontSize: 11),
-                  ),
-                ],
+                ),
+                Text(
+                  subtitle,
+                  style: const TextStyle(fontSize: 12, color: BananiDash.mutedForeground),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            decoration: BoxDecoration(
+              color: BananiDash.primaryMuted(0.1),
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: Text(
+              badge,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: BananiDash.primary,
               ),
             ),
           ),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 4,
-            children: [
-              _LegDot(color: kPrimaryGreen, label: l10n.catEnergy),
-              _LegDot(color: kLeafAccent, label: l10n.catTransport),
-              _LegDot(color: kInfo, label: l10n.catSuppliers),
-              _LegDot(color: kWarning, label: l10n.catOther),
-            ],
-          ),
         ],
       ),
     );
   }
 }
 
-class _LegDot extends StatelessWidget {
-  const _LegDot({required this.color, required this.label});
-  final Color color;
-  final String label;
+class _QuickActionsPanel extends StatelessWidget {
+  const _QuickActionsPanel({required this.l10n});
+
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Container(
-          width: 8,
-          height: 8,
-          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        Text(
+          l10n.quickActionsTitle,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            color: BananiDash.foreground,
+          ),
         ),
-        const SizedBox(width: 6),
-        Text(label, style: Theme.of(context).textTheme.bodySmall),
+        const SizedBox(height: 16),
+        const QuickActions(banani: true),
       ],
-    );
-  }
-}
-
-class _RecentReports extends StatelessWidget {
-  const _RecentReports({required this.l10n});
-
-  final AppLocalizations l10n;
-
-  @override
-  Widget build(BuildContext context) {
-    return VerdantCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  l10n.dashRecentReports,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ),
-              TextButton(
-                onPressed: () => context.go('/reports'),
-                child: Text(l10n.dashSeeAll),
-              ),
-            ],
-          ),
-          _ReportRow(
-            l10n: l10n,
-            title: l10n.reportRow1Title,
-            standard: 'CSRD',
-            status: 'draft',
-          ),
-          const Divider(color: kBorderSubtle),
-          _ReportRow(
-            l10n: l10n,
-            title: l10n.reportRow2Title,
-            standard: 'ISSB',
-            status: 'in_review',
-          ),
-          const Divider(color: kBorderSubtle),
-          _ReportRow(
-            l10n: l10n,
-            title: l10n.reportRow3Title,
-            standard: 'CDP',
-            status: 'published',
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ReportRow extends StatelessWidget {
-  const _ReportRow({
-    required this.l10n,
-    required this.title,
-    required this.standard,
-    required this.status,
-  });
-
-  final AppLocalizations l10n;
-  final String title;
-  final String standard;
-  final String status;
-
-  @override
-  Widget build(BuildContext context) {
-    final tone = status == 'published'
-        ? BadgeTone.success
-        : status == 'in_review'
-            ? BadgeTone.warning
-            : BadgeTone.neutral;
-    final statusLabel = switch (status) {
-      'published' => l10n.statusPublished,
-      'in_review' => l10n.statusInReview,
-      _ => l10n.statusDraft,
-    };
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      title: Text(title),
-      subtitle: Text(standard),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          StatusBadge(label: statusLabel, tone: tone),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.download_outlined)),
-        ],
-      ),
-    );
-  }
-}
-
-class _AlertsPreview extends StatelessWidget {
-  const _AlertsPreview({required this.l10n});
-
-  final AppLocalizations l10n;
-
-  @override
-  Widget build(BuildContext context) {
-    return VerdantCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  l10n.dashAlerts,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ),
-              TextButton(
-                onPressed: () => context.go('/compliance'),
-                child: Text(l10n.dashSeeAllArrow),
-              ),
-            ],
-          ),
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.warning_amber_rounded, color: kError),
-            title: Text(l10n.alertRow1Title),
-            subtitle: Text(l10n.alertRow1Sub),
-          ),
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.info_outline, color: kWarning),
-            title: Text(l10n.alertRow2Title),
-            subtitle: Text(l10n.alertRow2Sub),
-          ),
-        ],
-      ),
     );
   }
 }

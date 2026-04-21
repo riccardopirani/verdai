@@ -126,7 +126,6 @@ class _BillingPageState extends State<BillingPage> {
 
     return Scaffold(
       backgroundColor: kSurface,
-      appBar: AppBar(title: Text(l10n.billingTitle)),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _error != null

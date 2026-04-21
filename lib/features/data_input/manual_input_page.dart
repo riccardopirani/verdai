@@ -170,7 +170,6 @@ class _ManualInputPageState extends State<ManualInputPage> {
 
     return Scaffold(
       backgroundColor: kSurface,
-      appBar: AppBar(title: Text(l10n.manualFullTitle)),
       body: body,
     );
   }
