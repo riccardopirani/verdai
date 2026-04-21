@@ -27,7 +27,7 @@ class SettingsPage extends StatelessWidget {
           ),
           ListTile(
             title: Text(l10n.settingsManualFull),
-            onTap: () => context.go('/data/manual'),
+            onTap: () => context.go('/settings/manual-input'),
           ),
           const SizedBox(height: 24),
           TextButton(

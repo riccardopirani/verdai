@@ -1,0 +1,274 @@
+================================================================================
+  VERDAI — Funzionalità dopo il login (area autenticata)
+  Documento descrittivo: interfaccia (UI) e comportamento per schermata
+  Generato in base al codice dell’app (Flutter / GoRouter).
+================================================================================
+
+
+--------------------------------------------------------------------------------
+1. STRUTTURA COMUNE DI NAVIGAZIONE (SHELL DASHBOARD)
+--------------------------------------------------------------------------------
+
+Percorsi protetti: senza sessione valida si viene reindirizzati al login.
+
+• Desktop (larghezza sufficiente)
+  - Barra laterale sinistra con:
+      · Logo Verdai + nome brand (in espansione completa)
+      · Selettore lingua
+      · Email utente (testo)
+      · Menu voci (con etichette lunghe):
+          - Dashboard        → /dashboard
+          - Dati / Emissioni → /emissions
+          - Report           → /reports
+          - Compliance       → /compliance
+          - Integrazioni     → /integrations
+          - Impostazioni     → /settings
+      · Blocco in basso (solo desktop): piano “Starter” di esempio, barra
+        progresso report usati (2/3), pulsante “Upgrade” → apre /pricing
+        (landing pubblica con sezione prezzi).
+  - Area principale a destra: contenuto della pagina selezionata.
+
+• Mobile
+  - AppBar in alto: logo + nome, pulsante lingua compatto, icona ingranaggio
+    → /settings
+  - Corpo: pagina corrente
+  - NavigationBar in basso: 5 destinazioni (Dashboard, Dati, Report,
+    Compliance, Integrazioni) — la sesta voce (Impostazioni) si raggiunge
+    dall’icona in AppBar.
+
+Note UI: tema scuro (superfici verdi/grigie), tipografia e card coerenti
+con il design system interno (VerdantCard, colori kSurface, kPrimaryGreen, ecc.).
+
+
+--------------------------------------------------------------------------------
+2. DASHBOARD — /dashboard
+--------------------------------------------------------------------------------
+
+Cosa si vede (layout adattivo mobile / desktop):
+
+• Intestazione
+  - Titolo dashboard + breadcrumb testuale
+  - Campo ricerca (hint localizzato) — UI presente; logica di ricerca non
+    collegata a backend nel codice analizzato
+  - Icona notifiche con badge numerico fisso “2”; tap → /compliance
+  - Avatar circolare con iniziale email utente
+
+• KPI in card (riga su desktop, colonna su mobile)
+  - ESG score: punteggio sintetico ESG da dati demo / provider
+  - CO₂: tonnellate totali e delta indicativo (testo verde)
+  - Compliance: stato avanzamento checklist (percentuale)
+  - Report: utilizzo quota (es. usati / limite), barra di progresso, testo
+    “report rimanenti”
+
+• Grafici
+  - Andamento emissioni (line chart) — dati da automazione demo
+  - Grafico a torta: ripartizione per categoria emissioni
+
+• Sezioni sotto
+  - Report recenti: elenco sintetico degli ultimi report (titolo, meta, stato)
+  - Anteprima alert: lista breve di avvisi compliance
+
+• Azioni rapide (card “Quick actions”)
+  Griglia di 4 tile con icona + etichetta; tap naviga a:
+    1) Aggiungi emissioni     → /emissions
+    2) Genera report          → /reports/new
+    3) Carica Excel             → /emissions
+    4) Collega ERP              → /integrations
+
+Scopo: panoramica operativa ESG/CO₂, accesso rapido alle aree dati, report
+e integrazioni.
+
+
+--------------------------------------------------------------------------------
+3. DATI / EMISSIONI — /emissions  (UploadPage)
+--------------------------------------------------------------------------------
+
+AppBar con TabBar a 3 schede:
+
+Scheda A — Caricamento Excel
+  - Area drag/drop stilizzata (evidenziazione al passaggio mouse su web)
+  - Pulsante per scegliere file; mostra nome file e esito import (kg CO₂e)
+    tramite EsgAutomationService.importFromFile
+  - Card “Mapping”: righe colonna Excel → campo (kWh, km, litri diesel) con
+    dropdown; pulsante import mostra snackbar “calcolo in corso” (demo)
+
+Scheda B — Inserimento manuale
+  - Incorpora ManualInputPage(embed: true): vedi sezione 8.
+
+Scheda C — Integrazioni
+  - Placeholder testuale che invita ad aprire Integrazioni dal menu
+
+Scopo: far entrare dati di impronta (file, manuale) e collegare il flusso
+alle integrazioni esterne.
+
+
+--------------------------------------------------------------------------------
+4. REPORT — ELENCO — /reports
+--------------------------------------------------------------------------------
+
+• AppBar: titolo + pulsante “Nuovo report” → /reports/new
+
+• Corpo
+  - Se non ci sono dati anno su anno (tutti zeri): messaggio stato vuoto
+  - Altrimenti: lista card per anno con titolo, sottotitolo (standard CSRD/GRI/ESRS,
+    anno), badge stato (es. pubblicato)
+
+Scopo: consultare i report generati (in demo molti dati provengono da servizi
+locali / placeholder).
+
+
+--------------------------------------------------------------------------------
+5. REPORT — GENERATORE — /reports/new  (ReportGeneratorPage)
+--------------------------------------------------------------------------------
+
+Flusso a 3 step (chip in alto: Configurazione → Anteprima → Output).
+
+Step 0 — Configurazione
+  - Anno (dropdown)
+  - Standard (CSRD, GRI, ESRS)
+  - Lingua report (IT, EN, DE, FR)
+  - Switch: benchmark
+  - Switch: piano di miglioramento
+  - Pulsante Avanti
+
+Step 1 — Anteprima dati
+  - Indicatore completezza dati (progress bar fissa demo)
+  - Testo su dati mancanti (es. Scope 3) + link “Aggiungi ora” (non collegato)
+  - Indietro / Avanti
+
+Step 2 — Output
+  - Pulsante genera report: anima una sequenza di step (raccogli, calcola,
+    compliance, PDF, fatto) con spunte
+  - Pulsante anteprima PDF: genera PDF demo (PdfGeneratorService + Printing)
+    con dati azienda demo e impronta per anno selezionato
+
+Scopo: guidare l’utente nella configurazione e nella generazione/esportazione
+di un report ESG (logica mista demo + anteprima reale PDF).
+
+
+--------------------------------------------------------------------------------
+6. COMPLIANCE — /compliance
+--------------------------------------------------------------------------------
+
+• Sezione Alert
+  - Card per ogni alert: icona (warning o info), titolo e sottotitolo
+    (es. fornitori mancanti, gara in scadenza) — dati da EsgAutomationService
+
+• Sezione Checklist
+  - CheckboxListTile per voci tipo: doppia materialità, disclosure scope,
+    evidenze fornitori, piano clima, governance — con framework associato;
+    onChanged vuoto (solo visualizzazione stato)
+
+• Sezione Certificato gara
+  - Card con riferimento certificato, impronta in tonnellate, validità
+
+Scopo: monitorare adempimenti CSRD-like, alert operativi e certificato tender
+sintetico (dati da layer automazione demo).
+
+
+--------------------------------------------------------------------------------
+7. INTEGRAZIONI — /integrations
+--------------------------------------------------------------------------------
+
+Griglia di card (3 colonne su layout a griglia):
+
+  - SAP, Fatture in Cloud, Google Sheets, QuickBooks, API custom: pulsante
+    azione (Connect / OAuth / genera API key) — onPressed vuoto tranne UI
+  - Excel: stato “Connesso” in verde (solo lettura)
+
+Scopo: vetrina integrazioni; solo Excel risulta “connesso” in demo.
+
+
+--------------------------------------------------------------------------------
+8. INSERIMENTO MANUALE (pagina dedicata) — /settings/manual-input
+--------------------------------------------------------------------------------
+
+Raggiungibile da Impostazioni → voce inserimento dati manuale.
+
+• Card con:
+  - Dropdown categoria (Energia, Gas, Trasporti, Acqua, Rifiuti, Fornitori, ecc.)
+  - Campi numerici (es. kWh, km, diesel) in base alla categoria
+  - Pulsante aggiungi: calcola CO₂ (CO2CalculatorService) e registra riga in
+    EsgAutomationService; aggiorna lista righe inserite sotto forma di testo
+
+Scopo: inserire voci di emissione senza file, aggiornando il modello dati locale
+demo.
+
+
+--------------------------------------------------------------------------------
+9. IMPOSTAZIONI — /settings
+--------------------------------------------------------------------------------
+
+Lista semplice:
+  - Profilo azienda → /settings/company
+  - Fatturazione / abbonamento → /settings/billing
+  - Inserimento manuale (voce completa) → /settings/manual-input
+  - Esci → navigazione a /auth/login (non esegue signOut Supabase nel codice
+    mostrato; solo navigazione)
+
+Scopo: hub impostazioni account e dati azienda.
+
+
+--------------------------------------------------------------------------------
+10. PROFILO AZIENDA — /settings/company
+--------------------------------------------------------------------------------
+
+• Titolo + etichetta “Ragione sociale” + testo hint demo (dati statici)
+
+Scopo: placeholder per anagrafica legale; espansione futura.
+
+
+--------------------------------------------------------------------------------
+11. FATTURAZIONE — /settings/billing
+--------------------------------------------------------------------------------
+
+• Stato caricamento / errore / contenuto:
+  - Card piano corrente: testo “nessun abbonamento” oppure piano + stato Stripe
+  - Per ogni piano (Starter, Growth, Partner da backend): nome, prezzo, descrizione,
+    pulsante Seleziona → sessione Checkout Stripe (browser)
+  - Card metodo pagamento (testo demo maschera carta)
+  - Portale cliente Stripe (se c’è subscription)
+  - Zona pericoli: annulla abbonamento a fine periodo (conferma dialog)
+
+Scopo: gestione abbonamenti ricorrenti, upgrade e cancellazione tramite Stripe
++ Supabase Edge Functions (richiede deploy e segreti configurati).
+
+
+--------------------------------------------------------------------------------
+12. ONBOARDING — /onboarding  (opzionale, fuori dalla shell laterale)
+--------------------------------------------------------------------------------
+
+Wizard a 5 passi (barra progresso sotto AppBar):
+
+  0) Benvenuto: P.IVA, ragione sociale, sede, paese
+  1) Settore: choice chip (manifatturiero, logistica, retail, …)
+  2) Standard di reporting: checkbox multipli (CSRD, ISSB, CDP, GRI, …)
+  3) Dati energetici / flotta / dipendenti (campi numerici)
+  4) Scelta piano: trial vs a pagamento → fine: se pagamento va a /pricing,
+     altrimenti /dashboard
+
+Pulsanti Indietro / Avanti (o Fine).
+
+Scopo: raccogliere profilo iniziale utente/azienda dopo la registrazione.
+
+
+--------------------------------------------------------------------------------
+13. NOTE IMPORTANTI (DEMO VS PRODUZIONE)
+--------------------------------------------------------------------------------
+
+• Molte liste (dashboard KPI, report, compliance, integrazioni) usano
+  EsgAutomationService o dati locali/simulati: in produzione andrebbero
+  collegati a Supabase e alle API reali.
+
+• Billing richiede funzioni Supabase Stripe e migrazioni DB attive.
+
+• La ricerca in dashboard e alcuni pulsanti (es. mapping import, connect ERP)
+  sono principalmente UI/placeholder.
+
+• Route pubblica /pricing è la landing con scroll alla sezione prezzi, non
+  una pagina prodotto separata.
+
+
+================================================================================
+Fine documento
+================================================================================
