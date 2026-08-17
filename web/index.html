@@ -1,46 +1,471 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- iOS meta tags & icons -->
+  <!--
+    Canonical production host. Change SITE in sitemap.xml / robots.txt too
+    if you deploy under another domain.
+  -->
+  <title>Verdai — Report VSME per i clienti della tua supply chain | ESG per PMI</title>
+  <meta name="description" content="Dopo l'Omnibus la CSRD non obbliga più la maggior parte delle PMI. I clienti grandi, le banche e gli investitori sì. Verdai genera il report VSME e la carbon footprint da inviare in ore, non in mesi.">
+  <meta name="keywords" content="Verdai, Esgync, VSME, Omnibus, CSRD, software ESG PMI, questionari ESG clienti, carbon accounting, Scope 1 2 3, dati fornitori, supply chain ESG">
+  <meta name="author" content="Marconi Software S.R.L.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#1A4731">
+  <link rel="canonical" href="https://esgync.com/">
+
+  <!-- Open Graph (social crawlers do not execute Flutter/JS) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:site_name" content="Verdai">
+  <meta property="og:title" content="Verdai — Il report VSME che i tuoi clienti grandi possono chiederti">
+  <meta property="og:description" content="L'Omnibus ha tolto l'obbligo CSRD alle PMI. Restano i questionari di procurement, banche e investitori. Rispondi in VSME.">
+  <meta property="og:url" content="https://esgync.com/">
+  <meta property="og:image" content="https://esgync.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="675">
+  <meta property="og:image:alt" content="Verdai — report VSME e carbon accounting per PMI nella supply chain">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Verdai — Report VSME per i clienti della tua filiera">
+  <meta name="twitter:description" content="Niente più 'sei obbligato dalla CSRD'. Il tetto legale per le PMI è il VSME. Prova gratis, nessuna carta richiesta.">
+  <meta name="twitter:image" content="https://esgync.com/og-image.png">
+
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="sass_esg">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Verdai">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>sass_esg</title>
+  <link rel="icon" type="image/png" href="favicon.png">
   <link rel="manifest" href="manifest.json">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://esgync.com/#org",
+        "name": "Marconi Software S.R.L.",
+        "url": "https://www.marconisoftware.com/",
+        "email": "sales@marconisoftware.com",
+        "vatID": "IT02190840385",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Via del Riccio 24/A",
+          "addressLocality": "Dodici Morelli",
+          "addressRegion": "FE",
+          "addressCountry": "IT"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://esgync.com/#app",
+        "name": "Verdai",
+        "alternateName": "Esgync",
+        "url": "https://esgync.com/",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "inLanguage": ["it", "en"],
+        "description": "Piattaforma ESG per PMI: report VSME, carbon accounting Scope 1/2/3 e risposte ai questionari di clienti, banche e investitori dopo l'Omnibus I.",
+        "offers": {
+          "@type": "AggregateOffer",
+          "priceCurrency": "EUR",
+          "lowPrice": "99",
+          "highPrice": "599",
+          "offerCount": "3"
+        },
+        "publisher": { "@id": "https://esgync.com/#org" }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://esgync.com/#website",
+        "url": "https://esgync.com/",
+        "name": "Verdai",
+        "publisher": { "@id": "https://esgync.com/#org" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Dopo l'Omnibus, chi è ancora in CSRD?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Dal FY che inizia il 1° gennaio 2027: imprese UE con oltre 1.000 dipendenti e oltre 450 M€ di fatturato netto (Direttiva (UE) 2026/470). Quasi tutte le PMI sono fuori. Resta la cascata: i grandi reporter raccolgono i dati di filiera. Non è consulenza legale."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Cos'è il VSME e perché conta adesso?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "È lo standard volontario europeo per le PMI. Dopo l'Omnibus, le aziende in CSRD in genere non possono chiedere ai partner sotto i 1.000 dipendenti più dati di quelli previsti dal VSME (value chain information cap)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Posso inviare il report a un cliente o a una banca?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sì. L'export è pensato per questionari, gare e pratiche di credito: dati carbon, datapoint VSME e tracciabilità."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "E se le regole cambiano di nuovo?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "La piattaforma segue Omnibus, VSME ed ESRS così rispondi con il tetto attuale, non con l'Excel dell'anno scorso."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #0f172a;
+      --muted: #64748b;
+      --primary: #1a4731;
+      --on-primary: #ffffff;
+      --accent: #f59e0b;
+      --border: #e2e8f0;
+      --soft: #f1f5f9;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.55;
+    }
+    a { color: var(--primary); }
+    #flutter-host {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      opacity: 0;
+      pointer-events: none;
+      background: transparent;
+    }
+    html.flutter-ready, html.flutter-ready body {
+      overflow: hidden;
+      height: 100%;
+    }
+    html.flutter-ready #flutter-host {
+      opacity: 1;
+      pointer-events: auto;
+      background: var(--bg);
+    }
+    /* Kept in the DOM after Flutter loads so crawlers that execute JS still see real text. */
+    .skip {
+      position: absolute;
+      left: -999px;
+      top: 8px;
+    }
+    .skip:focus { left: 8px; background: #fff; padding: 8px; z-index: 20; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    header.seo-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    header.seo-nav strong { color: var(--primary); font-size: 1.25rem; }
+    header.seo-nav nav { display: flex; flex-wrap: wrap; gap: 14px; }
+    header.seo-nav a { text-decoration: none; color: var(--muted); font-weight: 600; }
+    .hero {
+      background: var(--primary);
+      color: var(--on-primary);
+      padding: 72px 0 80px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.15; margin: 0 0 16px; }
+    .hero p { color: rgba(255,255,255,.82); font-size: 1.15rem; max-width: 42rem; }
+    .badge {
+      display: inline-block;
+      border: 1px solid rgba(245,158,11,.5);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: .85rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 20px; }
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: 8px;
+      padding: 14px 22px;
+    }
+    .btn-primary { background: var(--accent); color: var(--primary); }
+    .btn-ghost { border: 1px solid rgba(255,255,255,.35); color: #fff; }
+    .warn {
+      background: #ef4444;
+      color: #fff;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-weight: 600;
+    }
+    section { padding: 64px 0; }
+    section h2 { font-size: 1.7rem; margin: 0 0 12px; }
+    .muted { color: var(--muted); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 24px; }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      background: #fff;
+    }
+    .soft { background: var(--soft); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; }
+    footer.seo-foot {
+      padding: 36px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-weight: 600;
+    }
+    dt { font-weight: 700; margin-top: 16px; }
+    dd { margin: 6px 0 0; color: var(--muted); }
+  </style>
 </head>
 <body>
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
+  <a class="skip" href="#contenuto">Vai al contenuto</a>
 
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
+  <!--
+    Crawlable marketing HTML. Flutter Web (CanvasKit/Skwasm) paints pixels on a
+    canvas, so crawlers that only fetch this document would otherwise see an
+    empty body. This markup is the indexable source of truth and the no-JS
+    fallback; Flutter mounts into #flutter-host and covers it for human users.
   -->
+  <div id="seo-content">
+    <div class="wrap">
+      <header class="seo-nav">
+        <a href="/" rel="home"><strong>Verdai</strong></a>
+        <nav aria-label="Principale">
+          <a href="/how-it-works">Come funziona</a>
+          <a href="/features">Funzionalità</a>
+          <a href="/pricing">Prezzi</a>
+          <a href="/contact">Contatti</a>
+          <a href="/auth/login">Accedi</a>
+          <a href="/auth/register">Registrati</a>
+        </nav>
+      </header>
+    </div>
+
+    <main id="contenuto">
+      <section class="hero">
+        <div class="wrap">
+          <p class="badge">VSME — lo standard PMI dopo l'Omnibus</p>
+          <h1>Il report VSME che i tuoi clienti grandi possono chiederti. In 4 ore, non in 4 mesi.</h1>
+          <p>L'Omnibus ha tolto l'obbligo CSRD alla maggior parte delle PMI. Restano procurement, banche e investitori. Verdai risponde nello standard ufficiale VSME.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="/auth/register">Inizia Gratis — Nessuna carta richiesta</a>
+            <a class="btn btn-ghost" href="/features">Guarda la demo (3 min)</a>
+          </div>
+          <p class="warn">Direttiva (UE) 2026/470: la CSRD copre solo aziende con oltre 1.000 dipendenti e oltre 450 M€ di fatturato. Per tutti gli altri l'urgenza è l'effetto a cascata nella supply chain, non una sanzione di Bruxelles.</p>
+        </div>
+      </section>
+
+      <section id="situazione">
+        <div class="wrap">
+          <h2>Sei in buona compagnia.</h2>
+          <p class="muted">Migliaia di PMI europee non sono più in perimetro CSRD — e i dati ESG glieli chiedono comunque.</p>
+          <div class="grid">
+            <article class="card">
+              <h3>Ho ricevuto una richiesta ESG da un cliente grande</h3>
+              <p>Questionari ESG lunghi e complessi, senza sapere da dove iniziare.</p>
+            </article>
+            <article class="card">
+              <h3>Il mio commercialista non sa cosa fare</h3>
+              <p>Risposta tipica: serve un esperto ESG esterno da migliaia di euro.</p>
+            </article>
+            <article class="card">
+              <h3>Ho trovato template Excel online</h3>
+              <p>File confusionari, non aggiornati e non audit-ready.</p>
+            </article>
+            <article class="card">
+              <h3>L'Omnibus mi ha escluso dalla CSRD</h3>
+              <p>Sì, ma i clienti grandi, le banche e gli investitori continuano a chiedere. Per legge, in genere non possono pretendere più del VSME da chi ha meno di 1.000 dipendenti.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="how-it-works" class="soft">
+        <div class="wrap">
+          <h2>Da zero al pacchetto VSME da inviare al cliente, in 3 passi</h2>
+          <div class="grid">
+            <article class="card">
+              <h3>1. Connetti i tuoi dati</h3>
+              <p>Importa bollette, HR e fornitori in pochi minuti.</p>
+            </article>
+            <article class="card">
+              <h3>2. L'AI calcola tutto</h3>
+              <p>Scope 1, 2, 3 e indicatori ESG in automatico.</p>
+            </article>
+            <article class="card">
+              <h3>3. Genera il report VSME</h3>
+              <p>PDF pronto per clienti e banche, in un click.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="confronto">
+        <div class="wrap">
+          <h2>Verdai rispetto a consulente ed Excel</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Caratteristica</th>
+                <th>Consulente ESG</th>
+                <th>Excel</th>
+                <th>Verdai</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Costo</td>
+                <td>15k–30k/anno</td>
+                <td>0 ma 200 ore</td>
+                <td>da 99 €/mese</td>
+              </tr>
+              <tr>
+                <td>Tempo</td>
+                <td>3–6 mesi</td>
+                <td>Mai finito</td>
+                <td>4 ore</td>
+              </tr>
+              <tr>
+                <td>Pronto per il cliente</td>
+                <td>Dipende</td>
+                <td>No</td>
+                <td>Sì</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="features" class="soft">
+        <div class="wrap">
+          <h2>Quello che ti serve per rispondere alla cascata di filiera</h2>
+          <div class="grid">
+            <article class="card"><h3>Report VSME — il tetto legale della value chain</h3></article>
+            <article class="card"><h3>Carbon accounting (Scope 1, 2, 3)</h3></article>
+            <article class="card"><h3>Questionari clienti e dati fornitori</h3></article>
+            <article class="card"><h3>PDF pronto per il cliente, non una slide da consulente</h3></article>
+            <article class="card"><h3>Profilo Bancabilità ESG</h3></article>
+            <article class="card"><h3>Aggiornamenti Omnibus e VSME</h3></article>
+          </div>
+        </div>
+      </section>
+
+      <section id="scadenze">
+        <div class="wrap">
+          <h2>L'obbligo di legge si è ristretto. Le richieste dei clienti no.</h2>
+          <ul>
+            <li><strong>Marzo 2026:</strong> entra in vigore l'Omnibus I: soglie CSRD a 1.000 dipendenti e 450 M€ di fatturato.</li>
+            <li><strong>FY 2027:</strong> la CSRD obbligatoria resta solo per i gruppi più grandi. Le PMI escono dal perimetro legale.</li>
+            <li><strong>Value chain cap:</strong> i clienti grandi in genere non possono chiederti più del VSME se hai in media meno di 1.000 dipendenti.</li>
+            <li><strong>Oggi:</strong> procurement, banche e investitori chiedono già. Chi risponde in VSME tiene il contratto.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="pricing" class="soft">
+        <div class="wrap">
+          <h2>Prezzi</h2>
+          <p class="muted">Prova gratuita 14 giorni. Nessuna carta richiesta.</p>
+          <div class="grid">
+            <article class="card">
+              <h3>Starter</h3>
+              <p><strong>99 €/mese</strong></p>
+              <ul>
+                <li>Report VSME</li>
+                <li>Carbon footprint base</li>
+                <li>Supporto email</li>
+              </ul>
+              <p><a class="btn btn-primary" href="/auth/register">Prova gratis</a></p>
+            </article>
+            <article class="card">
+              <h3>Business</h3>
+              <p><strong>249 €/mese</strong></p>
+              <ul>
+                <li>Report ESRS</li>
+                <li>Scope 1/2/3</li>
+                <li>Audit trail completo</li>
+              </ul>
+              <p><a class="btn btn-primary" href="/auth/register">Prova gratis</a></p>
+            </article>
+            <article class="card">
+              <h3>Enterprise</h3>
+              <p><strong>599 €/mese</strong></p>
+              <ul>
+                <li>Consolidato gruppo</li>
+                <li>API ERP</li>
+                <li>Account manager</li>
+              </ul>
+              <p><a href="mailto:sales@marconisoftware.com?subject=Verdai%20—%20Richiesta%20commerciale">Contatta le vendite</a></p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq">
+        <div class="wrap">
+          <h2>Domande frequenti</h2>
+          <dl>
+            <dt>Dopo l'Omnibus, chi è ancora in CSRD?</dt>
+            <dd>Dal FY che inizia il 1° gennaio 2027: imprese UE con oltre 1.000 dipendenti e oltre 450 M€ di fatturato netto (Direttiva (UE) 2026/470). Quasi tutte le PMI sono fuori. Resta la cascata: i grandi reporter raccolgono i dati di filiera. Non è consulenza legale.</dd>
+            <dt>Cos'è il VSME e perché conta adesso?</dt>
+            <dd>È lo standard volontario europeo per le PMI. Dopo l'Omnibus, le aziende in CSRD in genere non possono chiedere ai partner sotto i 1.000 dipendenti più dati di quelli previsti dal VSME.</dd>
+            <dt>Posso inviarlo a un cliente o a una banca?</dt>
+            <dd>Sì. L'export è pensato per questionari, gare e pratiche di credito: dati carbon, datapoint VSME e tracciabilità.</dd>
+            <dt>E se le regole cambiano di nuovo?</dt>
+            <dd>La piattaforma segue Omnibus, VSME ed ESRS così rispondi con il tetto attuale, non con l'Excel dell'anno scorso.</dd>
+          </dl>
+        </div>
+      </section>
+
+      <section id="contact" class="soft">
+        <div class="wrap">
+          <h2>Contattaci</h2>
+          <p>Domande su VSME, questionari clienti o Verdai? Il team risponde entro un giorno lavorativo.</p>
+          <p>
+            Vendite e piloti:
+            <a href="mailto:sales@marconisoftware.com">sales@marconisoftware.com</a>
+          </p>
+          <p>Dati ospitati in UE. Lunedì–venerdì, 9:00–18:00 CET.</p>
+          <p><a class="btn btn-primary" href="/auth/register">Inizia la prova gratuita — 14 giorni</a></p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="seo-foot">
+      <div class="wrap">
+        <p>Marconi Software S.R.L - Via del Riccio 24/A, Dodici Morelli (FE) - VAT IT02190840385</p>
+        <p class="muted">I riferimenti alla Direttiva (UE) 2026/470 e al VSME sono informativi e non costituiscono consulenza legale.</p>
+      </div>
+    </footer>
+  </div>
+
+  <div id="flutter-host" aria-hidden="true"></div>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

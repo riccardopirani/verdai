@@ -274,7 +274,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get faqA5 =>
-      'From 2026 it concerns many SMEs above ~250 employees or ~€40M turnover — validate legally for your case.';
+      'After Omnibus I (Directive (EU) 2026/470), mandatory CSRD reporting applies only to companies with more than 1,000 employees and more than €450M net turnover, from financial years starting on 1 January 2027. Most SMEs are out of legal scope. The urgent work is answering buyers and banks in VSME. This is not legal advice.';
 
   @override
   String get faqA6 =>
@@ -293,7 +293,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get faqQ4 => 'Can I cancel anytime?';
 
   @override
-  String get faqQ5 => 'Does CSRD apply to my company?';
+  String get faqQ5 => 'Does CSRD still apply to my company?';
 
   @override
   String get faqQ6 => 'Do you offer support?';
@@ -341,7 +341,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get finalCtaSub => '14 days free, no credit card.';
 
   @override
-  String get finalCtaTitle => 'Start today. Penalties won’t wait.';
+  String get finalCtaTitle => 'Start today. Buyer questionnaires won’t wait.';
 
   @override
   String get finalCtaTrust => 'SSL • GDPR • EU hosting • Cancel anytime';
@@ -394,7 +394,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get genStepPdf => 'Building PDF…';
 
   @override
-  String get heroBadgeCsrd => 'CSRD 2025 ready';
+  String get heroBadgeCsrd => 'VSME — the SME standard after Omnibus';
 
   @override
   String get heroCtaDemo => 'Watch demo →';
@@ -406,7 +406,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get heroEsgScore => 'ESG score';
 
   @override
-  String get heroHeadline => 'Conformité ESG\nen 5 minutes.\nPas en 5 mois.';
+  String get heroHeadline =>
+      'ESG data for your buyers.\nIn 5 minutes.\nNot in 5 months.';
 
   @override
   String get heroScope1 => 'Scope 1 ✓';
@@ -415,7 +416,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get heroScope2 => 'Scope 2 ✓';
 
   @override
-  String get heroScopeCsrd => 'CSRD ✓';
+  String get heroScopeCsrd => 'VSME ✓';
 
   @override
   String heroScore(Object current, Object max) {
@@ -427,7 +428,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get heroSub =>
-      'Verdai calcule vos émissions CO₂ et génère des rapports CSRD.';
+      'Verdai calculates your CO₂ footprint and produces a VSME report you can send to customers, banks and investors — even if CSRD no longer applies to you.';
 
   @override
   String get hintLegalDemo => 'Demo SpA';
@@ -1057,10 +1058,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get problem2Body =>
-      'CSRD, ISSB, GRI, CDP — a different language every time.';
+      'Customer questionnaires, banks, VSME, CDP — a different format every time.';
 
   @override
-  String get problem2Title => 'Opaque standards';
+  String get problem2Title => 'Inconsistent requests';
 
   @override
   String get problem3Body => 'For reports that law changes every year.';
@@ -1073,7 +1074,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get problemWarning =>
-      'From 2026 CSRD penalties can reach up to 2% of turnover';
+      'Omnibus removed CSRD duty for most SMEs. Large customers still ask for ESG data — and the legal cap is VSME.';
 
   @override
   String get qaAddEmissions => 'Add emissions';
@@ -1272,7 +1273,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get socialTitle => 'What SMEs say about Verdai';
 
   @override
-  String get solAlert1 => 'By Dec 2025: first CSRD reporting';
+  String get solAlert1 => 'Customer ESG questionnaire due this month';
 
   @override
   String get solAlert2 => 'Scope 3: request from automotive OEM';
@@ -1308,7 +1309,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get solReportPreviewBody =>
-      'CSRD • Executive summary\nLogo • Digital signature';
+      'VSME • Ready for buyers\nLogo • Traceable export';
 
   @override
   String get solReportPreviewTitle => 'Report preview';
@@ -1525,11 +1526,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get pubLandingHeroHeadline =>
-      'Your ESG sustainability report in 4 hours, not 4 months.';
+      'The VSME report your large customers can actually ask you for. In 4 hours, not 4 months.';
 
   @override
   String get pubLandingHeroSub =>
-      'The only software that turns company data into CSRD-compliant reports ready for audit.';
+      'Omnibus took CSRD off most SMEs. Procurement, banks and investors still want the data. Verdai answers in the official VSME format.';
 
   @override
   String get pubLandingHeroCtaFree => 'Start free — No card required';
@@ -1539,14 +1540,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get pubLandingHeroWarning =>
-      'Warning: from 2027 CSRD affects the entire supply chain. Preparing today avoids cost and delays.';
+      'Directive (EU) 2026/470: CSRD now covers only companies with more than 1,000 employees and more than €450M turnover. For everyone else the urgency is the supply-chain cascade, not a Brussels fine.';
 
   @override
   String get pubLandingSocialTitle => 'You\'re in good company.';
 
   @override
   String get pubLandingSocialSubtitle =>
-      '7,000 Italian companies are in the same situation.';
+      'Thousands of European SMEs are no longer in CSRD scope — and still get asked for ESG data.';
 
   @override
   String get pubLandingSocial1Title =>
@@ -1571,54 +1572,54 @@ class AppLocalizationsFr extends AppLocalizations {
       'Messy files, not updated, and not audit-ready.';
 
   @override
-  String get pubLandingSocial4Title => 'I don\'t know if I\'m obliged or not';
+  String get pubLandingSocial4Title => 'Omnibus took me out of CSRD';
 
   @override
   String get pubLandingSocial4Body =>
-      'Complex rules: ESRS, VSME, Omnibus and deadlines.';
+      'Yes — but large customers, banks and investors still ask. By law they generally cannot demand more than VSME from companies under 1,000 employees.';
 
   @override
-  String get pubLandingFaqQ1 => 'Who must report on ESG in Italy?';
+  String get pubLandingFaqQ1 => 'After Omnibus, who is still in CSRD?';
 
   @override
   String get pubLandingFaqA1 =>
-      'Thresholds evolve, but large companies\' supply chains are already involved in data collection.';
+      'From financial years starting 1 January 2027: EU companies with more than 1,000 employees and more than €450M net turnover (Directive (EU) 2026/470). Almost all SMEs are out. What remains is the cascade: large reporters still collect value-chain data. This is not legal advice.';
 
   @override
-  String get pubLandingFaqQ2 => 'What are ESRS and VSME standards?';
+  String get pubLandingFaqQ2 => 'What is VSME and why does it matter now?';
 
   @override
   String get pubLandingFaqA2 =>
-      'European standards for ESG reporting: ESRS for full obligations, VSME for SMEs.';
+      'VSME is the EU voluntary SME sustainability standard. After Omnibus, in-scope CSRD companies generally must not request more than VSME from partners averaging under 1,000 employees (value-chain information cap). It is the official format for answering buyer requests.';
 
   @override
-  String get pubLandingFaqQ3 => 'Is the report valid for external audit?';
+  String get pubLandingFaqQ3 => 'Can I send this to a customer or a bank?';
 
   @override
   String get pubLandingFaqA3 =>
-      'The report includes structure, data and traceability useful for review and assurance.';
+      'Yes. The export is structured for questionnaires, tenders and credit files: carbon data, VSME datapoints and a traceable trail.';
 
   @override
-  String get pubLandingFaqQ4 => 'What happens if regulation changes?';
+  String get pubLandingFaqQ4 => 'What if the rules change again?';
 
   @override
   String get pubLandingFaqA4 =>
-      'The platform updates frameworks and notifies you of relevant changes.';
+      'The platform tracks Omnibus, VSME and ESRS updates so you answer with the current ceiling — not last year’s Excel.';
 
   @override
   String get pubLandingFinalTitle =>
-      'The best time to start was yesterday. The second best is now.';
+      'Your customer will not wait for your spreadsheet.';
 
   @override
   String get pubLandingFinalSub =>
-      'Every week you wait reduces your competitive edge.';
+      'Every unanswered questionnaire is a commercial risk, not a Brussels penalty.';
 
   @override
   String get pubLandingFinalCta => 'Start your 14-day free trial';
 
   @override
   String get pubLandingStepsTitle =>
-      'From zero to a verifiable ESG report in 3 steps';
+      'From zero to a VSME pack you can send the buyer, in 3 steps';
 
   @override
   String get pubLandingStep1Title => 'Connect your data';
@@ -1635,10 +1636,11 @@ class AppLocalizationsFr extends AppLocalizations {
       'Scope 1, 2, 3 and ESG indicators automatically.';
 
   @override
-  String get pubLandingStep3Title => 'Generate the report';
+  String get pubLandingStep3Title => 'Generate the VSME report';
 
   @override
-  String get pubLandingStep3Body => 'Audit-ready CSRD/ESRS PDF in one click.';
+  String get pubLandingStep3Body =>
+      'PDF ready for customers and banks, in one click.';
 
   @override
   String get pubCompareColFeature => 'Feature';
@@ -1656,7 +1658,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get pubCompareRowTime => 'Time';
 
   @override
-  String get pubCompareRowAudit => 'Audit-ready';
+  String get pubCompareRowAudit => 'Buyer-ready';
 
   @override
   String get pubCompareCostConsultant => '€15k–30k/year';
@@ -1686,54 +1688,58 @@ class AppLocalizationsFr extends AppLocalizations {
   String get pubCompareAuditYes => 'Yes';
 
   @override
-  String get pubFeaturesGridTitle => 'Everything you need for ESG compliance';
+  String get pubFeaturesGridTitle =>
+      'What you need to answer the supply-chain cascade';
 
   @override
-  String get pubFeatureCarbon => 'Automatic carbon footprint calculation';
+  String get pubFeatureCarbon => 'Carbon accounting (Scope 1, 2, 3)';
 
   @override
-  String get pubFeatureStandards => 'Integrated ESRS and VSME standards';
+  String get pubFeatureStandards => 'VSME report — the value-chain legal cap';
 
   @override
-  String get pubFeaturePdf => 'Audit-ready PDF reports';
+  String get pubFeaturePdf => 'Buyer-ready PDF, not a consultant deck';
 
   @override
   String get pubFeatureBanking => 'ESG bankability profile';
 
   @override
-  String get pubFeatureSupplyChain => 'Supply chain dashboard';
+  String get pubFeatureSupplyChain => 'Buyer questionnaires and supplier data';
 
   @override
-  String get pubFeatureAlerts => 'Regulatory alerts';
+  String get pubFeatureAlerts => 'Omnibus and VSME updates';
 
   @override
-  String get pubTimelineTitle => 'Regulation won\'t wait. Deadlines are real.';
+  String get pubTimelineTitle =>
+      'The legal duty shrank. Buyer requests did not.';
 
   @override
-  String get pubTimeline1Label => '2025 – NOW';
+  String get pubTimeline1Label => 'March 2026';
 
   @override
   String get pubTimeline1Body =>
-      'Large companies already in scope; supply chain involved.';
+      'Omnibus I enters into force: CSRD thresholds rise to 1,000 employees and €450M turnover.';
 
   @override
-  String get pubTimeline2Label => '2027 → 2028';
+  String get pubTimeline2Label => 'FY 2027';
 
   @override
-  String get pubTimeline2Body => 'Large non-listed companies: full obligation.';
+  String get pubTimeline2Body =>
+      'Mandatory CSRD stays only for the largest groups. SMEs leave the legal perimeter.';
 
   @override
-  String get pubTimeline3Label => '2028 → 2029';
+  String get pubTimeline3Label => 'Value-chain cap';
 
   @override
-  String get pubTimeline3Body => 'Listed SMEs: structured ESG reporting.';
+  String get pubTimeline3Body =>
+      'Large customers generally cannot ask you for more than VSME if you average under 1,000 employees.';
 
   @override
-  String get pubTimeline4Label => 'Always';
+  String get pubTimeline4Label => 'Today';
 
   @override
   String get pubTimeline4Body =>
-      'If you\'re a supplier, clients already ask for ESG data.';
+      'Procurement, banks and investors already ask. Teams that answer in VSME keep the contract.';
 
   @override
   String get pubTestimonial1Name => 'Marco R.';
@@ -1820,7 +1826,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get contactPageSubtitle =>
-      'Questions about CSRD, ESG reporting, or Verdai? Our team replies in one business day.';
+      'Questions on VSME, buyer questionnaires or Verdai? We reply within one business day.';
 
   @override
   String get contactCardSalesTitle => 'Sales & pilots';

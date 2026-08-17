@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+Allow: /how-it-works
+Allow: /features
+Allow: /pricing
+Allow: /contact
+Allow: /auth/login
+Allow: /auth/register
+
+Disallow: /dashboard
+Disallow: /onboarding
+Disallow: /emissions
+Disallow: /reports
+Disallow: /compliance
+Disallow: /integrations
+Disallow: /settings
+Disallow: /auth/forgot-password
+
+Sitemap: https://esgync.com/sitemap.xml

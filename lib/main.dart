@@ -6,10 +6,13 @@ import 'app.dart';
 import 'core/constants/app_constants.dart';
 import 'core/locale/locale_prefs.dart';
 import 'core/locale/locale_provider.dart';
+import 'core/web/configure_url_strategy.dart'
+    if (dart.library.js_interop) 'core/web/configure_url_strategy_web.dart';
 import 'services/stripe_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  configureUrlStrategy();
 
   final initialLocale = await loadSavedOrDeviceLocale();
 

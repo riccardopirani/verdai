@@ -653,7 +653,7 @@ abstract class AppLocalizations {
   /// No description provided for @faqA5.
   ///
   /// In en, this message translates to:
-  /// **'From 2026 it concerns many SMEs above ~250 employees or ~€40M turnover — validate legally for your case.'**
+  /// **'After Omnibus I (Directive (EU) 2026/470), mandatory CSRD reporting applies only to companies with more than 1,000 employees and more than €450M net turnover, from financial years starting on 1 January 2027. Most SMEs are out of legal scope. The urgent work is answering buyers and banks in VSME. This is not legal advice.'**
   String get faqA5;
 
   /// No description provided for @faqA6.
@@ -689,7 +689,7 @@ abstract class AppLocalizations {
   /// No description provided for @faqQ5.
   ///
   /// In en, this message translates to:
-  /// **'Does CSRD apply to my company?'**
+  /// **'Does CSRD still apply to my company?'**
   String get faqQ5;
 
   /// No description provided for @faqQ6.
@@ -785,7 +785,7 @@ abstract class AppLocalizations {
   /// No description provided for @finalCtaTitle.
   ///
   /// In en, this message translates to:
-  /// **'Start today. Penalties won’t wait.'**
+  /// **'Start today. Buyer questionnaires won’t wait.'**
   String get finalCtaTitle;
 
   /// No description provided for @finalCtaTrust.
@@ -887,7 +887,7 @@ abstract class AppLocalizations {
   /// No description provided for @heroBadgeCsrd.
   ///
   /// In en, this message translates to:
-  /// **'CSRD 2025 ready'**
+  /// **'VSME — the SME standard after Omnibus'**
   String get heroBadgeCsrd;
 
   /// No description provided for @heroCtaDemo.
@@ -911,7 +911,7 @@ abstract class AppLocalizations {
   /// No description provided for @heroHeadline.
   ///
   /// In en, this message translates to:
-  /// **'ESG compliance\nin 5 minutes.\nNot in 5 months.'**
+  /// **'ESG data for your buyers.\nIn 5 minutes.\nNot in 5 months.'**
   String get heroHeadline;
 
   /// No description provided for @heroScope1.
@@ -929,7 +929,7 @@ abstract class AppLocalizations {
   /// No description provided for @heroScopeCsrd.
   ///
   /// In en, this message translates to:
-  /// **'CSRD ✓'**
+  /// **'VSME ✓'**
   String get heroScopeCsrd;
 
   /// No description provided for @heroScore.
@@ -947,7 +947,7 @@ abstract class AppLocalizations {
   /// No description provided for @heroSub.
   ///
   /// In en, this message translates to:
-  /// **'Verdai automatically calculates your CO₂ emissions, generates CSRD‑ready reports, and helps you reduce regulatory risk.'**
+  /// **'Verdai calculates your CO₂ footprint and produces a VSME report you can send to customers, banks and investors — even if CSRD no longer applies to you.'**
   String get heroSub;
 
   /// No description provided for @hintLegalDemo.
@@ -2159,13 +2159,13 @@ abstract class AppLocalizations {
   /// No description provided for @problem2Body.
   ///
   /// In en, this message translates to:
-  /// **'CSRD, ISSB, GRI, CDP — a different language every time.'**
+  /// **'Customer questionnaires, banks, VSME, CDP — a different format every time.'**
   String get problem2Body;
 
   /// No description provided for @problem2Title.
   ///
   /// In en, this message translates to:
-  /// **'Opaque standards'**
+  /// **'Inconsistent requests'**
   String get problem2Title;
 
   /// No description provided for @problem3Body.
@@ -2189,7 +2189,7 @@ abstract class AppLocalizations {
   /// No description provided for @problemWarning.
   ///
   /// In en, this message translates to:
-  /// **'From 2026 CSRD penalties can reach up to 2% of turnover'**
+  /// **'Omnibus removed CSRD duty for most SMEs. Large customers still ask for ESG data — and the legal cap is VSME.'**
   String get problemWarning;
 
   /// No description provided for @qaAddEmissions.
@@ -2567,7 +2567,7 @@ abstract class AppLocalizations {
   /// No description provided for @solAlert1.
   ///
   /// In en, this message translates to:
-  /// **'By Dec 2025: first CSRD reporting'**
+  /// **'Customer ESG questionnaire due this month'**
   String get solAlert1;
 
   /// No description provided for @solAlert2.
@@ -2633,7 +2633,7 @@ abstract class AppLocalizations {
   /// No description provided for @solReportPreviewBody.
   ///
   /// In en, this message translates to:
-  /// **'CSRD • Executive summary\nLogo • Digital signature'**
+  /// **'VSME • Ready for buyers\nLogo • Traceable export'**
   String get solReportPreviewBody;
 
   /// No description provided for @solReportPreviewTitle.
@@ -3035,13 +3035,13 @@ abstract class AppLocalizations {
   /// No description provided for @pubLandingHeroHeadline.
   ///
   /// In en, this message translates to:
-  /// **'Your ESG sustainability report in 4 hours, not 4 months.'**
+  /// **'The VSME report your large customers can actually ask you for. In 4 hours, not 4 months.'**
   String get pubLandingHeroHeadline;
 
   /// No description provided for @pubLandingHeroSub.
   ///
   /// In en, this message translates to:
-  /// **'The only software that turns company data into CSRD-compliant reports ready for audit.'**
+  /// **'Omnibus took CSRD off most SMEs. Procurement, banks and investors still want the data. Verdai answers in the official VSME format.'**
   String get pubLandingHeroSub;
 
   /// No description provided for @pubLandingHeroCtaFree.
@@ -3059,7 +3059,7 @@ abstract class AppLocalizations {
   /// No description provided for @pubLandingHeroWarning.
   ///
   /// In en, this message translates to:
-  /// **'Warning: from 2027 CSRD affects the entire supply chain. Preparing today avoids cost and delays.'**
+  /// **'Directive (EU) 2026/470: CSRD now covers only companies with more than 1,000 employees and more than €450M turnover. For everyone else the urgency is the supply-chain cascade, not a Brussels fine.'**
   String get pubLandingHeroWarning;
 
   /// No description provided for @pubLandingSocialTitle.
@@ -3071,7 +3071,7 @@ abstract class AppLocalizations {
   /// No description provided for @pubLandingSocialSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'7,000 Italian companies are in the same situation.'**
+  /// **'Thousands of European SMEs are no longer in CSRD scope — and still get asked for ESG data.'**
   String get pubLandingSocialSubtitle;
 
   /// No description provided for @pubLandingSocial1Title.
@@ -3113,73 +3113,73 @@ abstract class AppLocalizations {
   /// No description provided for @pubLandingSocial4Title.
   ///
   /// In en, this message translates to:
-  /// **'I don\'t know if I\'m obliged or not'**
+  /// **'Omnibus took me out of CSRD'**
   String get pubLandingSocial4Title;
 
   /// No description provided for @pubLandingSocial4Body.
   ///
   /// In en, this message translates to:
-  /// **'Complex rules: ESRS, VSME, Omnibus and deadlines.'**
+  /// **'Yes — but large customers, banks and investors still ask. By law they generally cannot demand more than VSME from companies under 1,000 employees.'**
   String get pubLandingSocial4Body;
 
   /// No description provided for @pubLandingFaqQ1.
   ///
   /// In en, this message translates to:
-  /// **'Who must report on ESG in Italy?'**
+  /// **'After Omnibus, who is still in CSRD?'**
   String get pubLandingFaqQ1;
 
   /// No description provided for @pubLandingFaqA1.
   ///
   /// In en, this message translates to:
-  /// **'Thresholds evolve, but large companies\' supply chains are already involved in data collection.'**
+  /// **'From financial years starting 1 January 2027: EU companies with more than 1,000 employees and more than €450M net turnover (Directive (EU) 2026/470). Almost all SMEs are out. What remains is the cascade: large reporters still collect value-chain data. This is not legal advice.'**
   String get pubLandingFaqA1;
 
   /// No description provided for @pubLandingFaqQ2.
   ///
   /// In en, this message translates to:
-  /// **'What are ESRS and VSME standards?'**
+  /// **'What is VSME and why does it matter now?'**
   String get pubLandingFaqQ2;
 
   /// No description provided for @pubLandingFaqA2.
   ///
   /// In en, this message translates to:
-  /// **'European standards for ESG reporting: ESRS for full obligations, VSME for SMEs.'**
+  /// **'VSME is the EU voluntary SME sustainability standard. After Omnibus, in-scope CSRD companies generally must not request more than VSME from partners averaging under 1,000 employees (value-chain information cap). It is the official format for answering buyer requests.'**
   String get pubLandingFaqA2;
 
   /// No description provided for @pubLandingFaqQ3.
   ///
   /// In en, this message translates to:
-  /// **'Is the report valid for external audit?'**
+  /// **'Can I send this to a customer or a bank?'**
   String get pubLandingFaqQ3;
 
   /// No description provided for @pubLandingFaqA3.
   ///
   /// In en, this message translates to:
-  /// **'The report includes structure, data and traceability useful for review and assurance.'**
+  /// **'Yes. The export is structured for questionnaires, tenders and credit files: carbon data, VSME datapoints and a traceable trail.'**
   String get pubLandingFaqA3;
 
   /// No description provided for @pubLandingFaqQ4.
   ///
   /// In en, this message translates to:
-  /// **'What happens if regulation changes?'**
+  /// **'What if the rules change again?'**
   String get pubLandingFaqQ4;
 
   /// No description provided for @pubLandingFaqA4.
   ///
   /// In en, this message translates to:
-  /// **'The platform updates frameworks and notifies you of relevant changes.'**
+  /// **'The platform tracks Omnibus, VSME and ESRS updates so you answer with the current ceiling — not last year’s Excel.'**
   String get pubLandingFaqA4;
 
   /// No description provided for @pubLandingFinalTitle.
   ///
   /// In en, this message translates to:
-  /// **'The best time to start was yesterday. The second best is now.'**
+  /// **'Your customer will not wait for your spreadsheet.'**
   String get pubLandingFinalTitle;
 
   /// No description provided for @pubLandingFinalSub.
   ///
   /// In en, this message translates to:
-  /// **'Every week you wait reduces your competitive edge.'**
+  /// **'Every unanswered questionnaire is a commercial risk, not a Brussels penalty.'**
   String get pubLandingFinalSub;
 
   /// No description provided for @pubLandingFinalCta.
@@ -3191,7 +3191,7 @@ abstract class AppLocalizations {
   /// No description provided for @pubLandingStepsTitle.
   ///
   /// In en, this message translates to:
-  /// **'From zero to a verifiable ESG report in 3 steps'**
+  /// **'From zero to a VSME pack you can send the buyer, in 3 steps'**
   String get pubLandingStepsTitle;
 
   /// No description provided for @pubLandingStep1Title.
@@ -3221,13 +3221,13 @@ abstract class AppLocalizations {
   /// No description provided for @pubLandingStep3Title.
   ///
   /// In en, this message translates to:
-  /// **'Generate the report'**
+  /// **'Generate the VSME report'**
   String get pubLandingStep3Title;
 
   /// No description provided for @pubLandingStep3Body.
   ///
   /// In en, this message translates to:
-  /// **'Audit-ready CSRD/ESRS PDF in one click.'**
+  /// **'PDF ready for customers and banks, in one click.'**
   String get pubLandingStep3Body;
 
   /// No description provided for @pubCompareColFeature.
@@ -3263,7 +3263,7 @@ abstract class AppLocalizations {
   /// No description provided for @pubCompareRowAudit.
   ///
   /// In en, this message translates to:
-  /// **'Audit-ready'**
+  /// **'Buyer-ready'**
   String get pubCompareRowAudit;
 
   /// No description provided for @pubCompareCostConsultant.
@@ -3323,25 +3323,25 @@ abstract class AppLocalizations {
   /// No description provided for @pubFeaturesGridTitle.
   ///
   /// In en, this message translates to:
-  /// **'Everything you need for ESG compliance'**
+  /// **'What you need to answer the supply-chain cascade'**
   String get pubFeaturesGridTitle;
 
   /// No description provided for @pubFeatureCarbon.
   ///
   /// In en, this message translates to:
-  /// **'Automatic carbon footprint calculation'**
+  /// **'Carbon accounting (Scope 1, 2, 3)'**
   String get pubFeatureCarbon;
 
   /// No description provided for @pubFeatureStandards.
   ///
   /// In en, this message translates to:
-  /// **'Integrated ESRS and VSME standards'**
+  /// **'VSME report — the value-chain legal cap'**
   String get pubFeatureStandards;
 
   /// No description provided for @pubFeaturePdf.
   ///
   /// In en, this message translates to:
-  /// **'Audit-ready PDF reports'**
+  /// **'Buyer-ready PDF, not a consultant deck'**
   String get pubFeaturePdf;
 
   /// No description provided for @pubFeatureBanking.
@@ -3353,67 +3353,67 @@ abstract class AppLocalizations {
   /// No description provided for @pubFeatureSupplyChain.
   ///
   /// In en, this message translates to:
-  /// **'Supply chain dashboard'**
+  /// **'Buyer questionnaires and supplier data'**
   String get pubFeatureSupplyChain;
 
   /// No description provided for @pubFeatureAlerts.
   ///
   /// In en, this message translates to:
-  /// **'Regulatory alerts'**
+  /// **'Omnibus and VSME updates'**
   String get pubFeatureAlerts;
 
   /// No description provided for @pubTimelineTitle.
   ///
   /// In en, this message translates to:
-  /// **'Regulation won\'t wait. Deadlines are real.'**
+  /// **'The legal duty shrank. Buyer requests did not.'**
   String get pubTimelineTitle;
 
   /// No description provided for @pubTimeline1Label.
   ///
   /// In en, this message translates to:
-  /// **'2025 – NOW'**
+  /// **'March 2026'**
   String get pubTimeline1Label;
 
   /// No description provided for @pubTimeline1Body.
   ///
   /// In en, this message translates to:
-  /// **'Large companies already in scope; supply chain involved.'**
+  /// **'Omnibus I enters into force: CSRD thresholds rise to 1,000 employees and €450M turnover.'**
   String get pubTimeline1Body;
 
   /// No description provided for @pubTimeline2Label.
   ///
   /// In en, this message translates to:
-  /// **'2027 → 2028'**
+  /// **'FY 2027'**
   String get pubTimeline2Label;
 
   /// No description provided for @pubTimeline2Body.
   ///
   /// In en, this message translates to:
-  /// **'Large non-listed companies: full obligation.'**
+  /// **'Mandatory CSRD stays only for the largest groups. SMEs leave the legal perimeter.'**
   String get pubTimeline2Body;
 
   /// No description provided for @pubTimeline3Label.
   ///
   /// In en, this message translates to:
-  /// **'2028 → 2029'**
+  /// **'Value-chain cap'**
   String get pubTimeline3Label;
 
   /// No description provided for @pubTimeline3Body.
   ///
   /// In en, this message translates to:
-  /// **'Listed SMEs: structured ESG reporting.'**
+  /// **'Large customers generally cannot ask you for more than VSME if you average under 1,000 employees.'**
   String get pubTimeline3Body;
 
   /// No description provided for @pubTimeline4Label.
   ///
   /// In en, this message translates to:
-  /// **'Always'**
+  /// **'Today'**
   String get pubTimeline4Label;
 
   /// No description provided for @pubTimeline4Body.
   ///
   /// In en, this message translates to:
-  /// **'If you\'re a supplier, clients already ask for ESG data.'**
+  /// **'Procurement, banks and investors already ask. Teams that answer in VSME keep the contract.'**
   String get pubTimeline4Body;
 
   /// No description provided for @pubTestimonial1Name.
@@ -3581,7 +3581,7 @@ abstract class AppLocalizations {
   /// No description provided for @contactPageSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Questions about CSRD, ESG reporting, or Verdai? Our team replies in one business day.'**
+  /// **'Questions on VSME, buyer questionnaires or Verdai? We reply within one business day.'**
   String get contactPageSubtitle;
 
   /// No description provided for @contactCardSalesTitle.

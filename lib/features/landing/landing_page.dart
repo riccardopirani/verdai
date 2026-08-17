@@ -736,11 +736,11 @@ class _FeaturesSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final items = <(IconData, String)>[
-      (Icons.eco_outlined, l10n.pubFeatureCarbon),
       (Icons.menu_book_outlined, l10n.pubFeatureStandards),
+      (Icons.eco_outlined, l10n.pubFeatureCarbon),
+      (Icons.hub_outlined, l10n.pubFeatureSupplyChain),
       (Icons.description_outlined, l10n.pubFeaturePdf),
       (Icons.account_balance_outlined, l10n.pubFeatureBanking),
-      (Icons.hub_outlined, l10n.pubFeatureSupplyChain),
       (Icons.notifications_active_outlined, l10n.pubFeatureAlerts),
     ];
     return _Section(

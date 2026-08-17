@@ -273,7 +273,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get faqA5 =>
-      'From 2026 it concerns many SMEs above ~250 employees or ~€40M turnover — validate legally for your case.';
+      'Dopo l\'Omnibus I (Direttiva (UE) 2026/470) la CSRD obbligatoria resta solo per aziende con oltre 1.000 dipendenti e oltre 450 M€ di fatturato netto, dal FY che inizia il 1° gennaio 2027. Quasi tutte le PMI sono fuori. L\'urgenza è rispondere a clienti e banche in VSME. Non è consulenza legale.';
 
   @override
   String get faqA6 =>
@@ -292,7 +292,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get faqQ4 => 'Can I cancel anytime?';
 
   @override
-  String get faqQ5 => 'Does CSRD apply to my company?';
+  String get faqQ5 => 'Sono ancora obbligato dalla CSRD?';
 
   @override
   String get faqQ6 => 'Do you offer support?';
@@ -340,7 +340,8 @@ class AppLocalizationsIt extends AppLocalizations {
   String get finalCtaSub => '14 giorni gratis, senza carta.';
 
   @override
-  String get finalCtaTitle => 'Inizia oggi. Le sanzioni non aspettano.';
+  String get finalCtaTitle =>
+      'Inizia oggi. I questionari dei clienti non aspettano.';
 
   @override
   String get finalCtaTrust => 'SSL • GDPR • Hosting UE • Disdici quando vuoi';
@@ -393,7 +394,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get genStepPdf => 'Building PDF…';
 
   @override
-  String get heroBadgeCsrd => 'Conforme CSRD 2025';
+  String get heroBadgeCsrd => 'VSME — lo standard PMI dopo l\'Omnibus';
 
   @override
   String get heroCtaDemo => 'Guarda demo →';
@@ -405,7 +406,8 @@ class AppLocalizationsIt extends AppLocalizations {
   String get heroEsgScore => 'ESG score';
 
   @override
-  String get heroHeadline => 'Conformità ESG\nin 5 minuti.\nNon in 5 mesi.';
+  String get heroHeadline =>
+      'Dati ESG per i tuoi clienti.\nIn 5 minuti.\nNon in 5 mesi.';
 
   @override
   String get heroScope1 => 'Scope 1 ✓';
@@ -414,7 +416,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get heroScope2 => 'Scope 2 ✓';
 
   @override
-  String get heroScopeCsrd => 'CSRD ✓';
+  String get heroScopeCsrd => 'VSME ✓';
 
   @override
   String heroScore(Object current, Object max) {
@@ -426,7 +428,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get heroSub =>
-      'Verdai calcola le emissioni CO₂, genera report CSRD e riduce il rischio sanzioni.';
+      'Verdai calcola la carbon footprint e genera un report VSME da inviare a clienti, banche e investitori — anche se la CSRD non ti obbliga più.';
 
   @override
   String get hintLegalDemo => 'Demo SpA';
@@ -1051,10 +1053,10 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get problem2Body =>
-      'CSRD, ISSB, GRI, CDP: ogni volta una lingua diversa.';
+      'Questionari clienti, banche, VSME, CDP: ogni volta un formato diverso.';
 
   @override
-  String get problem2Title => 'Standard incomprensibili';
+  String get problem2Title => 'Richieste incoerenti';
 
   @override
   String get problem3Body => 'Per report che la normativa aggiorna ogni anno.';
@@ -1067,7 +1069,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get problemWarning =>
-      'Dal 2026 sanzioni CSRD fino al 2% del fatturato';
+      'L\'Omnibus ha tolto l\'obbligo CSRD alla maggior parte delle PMI. I clienti grandi continuano a chiedere i dati ESG — e il tetto legale è il VSME.';
 
   @override
   String get qaAddEmissions => 'Add emissions';
@@ -1266,7 +1268,8 @@ class AppLocalizationsIt extends AppLocalizations {
   String get socialTitle => 'Le opinioni delle PMI';
 
   @override
-  String get solAlert1 => 'By Dec 2025: first CSRD reporting';
+  String get solAlert1 =>
+      'Questionario ESG del cliente in scadenza questo mese';
 
   @override
   String get solAlert2 => 'Scope 3: request from automotive OEM';
@@ -1302,7 +1305,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get solReportPreviewBody =>
-      'CSRD • Executive summary\nLogo • Digital signature';
+      'VSME • Pronto per i clienti\nLogo • Export tracciabile';
 
   @override
   String get solReportPreviewTitle => 'Anteprima report';
@@ -1522,11 +1525,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get pubLandingHeroHeadline =>
-      'Il tuo Bilancio di Sostenibilità ESG in 4 ore, non in 4 mesi.';
+      'Il report VSME che i tuoi clienti grandi possono chiederti. In 4 ore, non in 4 mesi.';
 
   @override
   String get pubLandingHeroSub =>
-      'L\'unico software italiano che trasforma dati aziendali in report CSRD-compliant pronti per l\'audit.';
+      'L\'Omnibus ha tolto l\'obbligo CSRD alla maggior parte delle PMI. Restano procurement, banche e investitori. Verdai risponde nello standard ufficiale VSME.';
 
   @override
   String get pubLandingHeroCtaFree => 'Inizia Gratis - Nessuna carta richiesta';
@@ -1536,14 +1539,14 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get pubLandingHeroWarning =>
-      'Attenzione: dal 2027 il tema CSRD impatta tutta la supply chain. Prepararsi oggi evita costi e ritardi.';
+      'Direttiva (UE) 2026/470: la CSRD copre solo aziende con oltre 1.000 dipendenti e oltre 450 M€ di fatturato. Per tutti gli altri l\'urgenza è l\'effetto a cascata nella supply chain, non una sanzione di Bruxelles.';
 
   @override
   String get pubLandingSocialTitle => 'Sei in buona compagnia.';
 
   @override
   String get pubLandingSocialSubtitle =>
-      '7.000 aziende italiane si trovano nella stessa situazione.';
+      'Migliaia di PMI europee non sono più in perimetro CSRD — e i dati ESG glieli chiedono comunque.';
 
   @override
   String get pubLandingSocial1Title =>
@@ -1568,54 +1571,53 @@ class AppLocalizationsIt extends AppLocalizations {
       'File confusionari, non aggiornati e non audit-ready.';
 
   @override
-  String get pubLandingSocial4Title => 'Non so se sono obbligato o no';
+  String get pubLandingSocial4Title => 'L\'Omnibus mi ha escluso dalla CSRD';
 
   @override
   String get pubLandingSocial4Body =>
-      'Normativa complessa: ESRS, VSME, Omnibus e scadenze.';
+      'Sì, ma i clienti grandi, le banche e gli investitori continuano a chiedere. Per legge, in genere non possono pretendere più del VSME da chi ha meno di 1.000 dipendenti.';
 
   @override
-  String get pubLandingFaqQ1 => 'Chi è obbligato al reporting ESG in Italia?';
+  String get pubLandingFaqQ1 => 'Dopo l\'Omnibus, chi è ancora in CSRD?';
 
   @override
   String get pubLandingFaqA1 =>
-      'Le soglie evolvono, ma la supply chain di aziende grandi viene già coinvolta nella raccolta dati.';
+      'Dal FY che inizia il 1° gennaio 2027: imprese UE con oltre 1.000 dipendenti e oltre 450 M€ di fatturato netto (Direttiva (UE) 2026/470). Quasi tutte le PMI sono fuori. Resta la cascata: i grandi reporter raccolgono comunque i dati di filiera. Non è consulenza legale.';
 
   @override
-  String get pubLandingFaqQ2 => 'Cosa sono gli standard ESRS e VSME?';
+  String get pubLandingFaqQ2 => 'Cos\'è il VSME e perché conta adesso?';
 
   @override
   String get pubLandingFaqA2 =>
-      'Sono standard europei per la rendicontazione ESG: ESRS per obblighi pieni, VSME per PMI.';
+      'È lo standard volontario europeo per le PMI. Dopo l\'Omnibus, le aziende in CSRD in genere non possono chiedere ai partner sotto i 1.000 dipendenti più dati di quelli previsti dal VSME (value chain information cap). È il formato ufficiale con cui rispondere.';
 
   @override
-  String get pubLandingFaqQ3 => 'Il report è valido per l\'audit esterno?';
+  String get pubLandingFaqQ3 => 'Posso inviarlo a un cliente o a una banca?';
 
   @override
   String get pubLandingFaqA3 =>
-      'Il report include struttura, dati e tracciabilità utili per revisione e assurance.';
+      'Sì. L\'export è pensato per questionari, gare e pratiche di credito: dati carbon, datapoint VSME e tracciabilità.';
 
   @override
-  String get pubLandingFaqQ4 => 'Cosa succede se la normativa cambia?';
+  String get pubLandingFaqQ4 => 'E se le regole cambiano di nuovo?';
 
   @override
   String get pubLandingFaqA4 =>
-      'La piattaforma aggiorna i framework e notifica i cambiamenti rilevanti.';
+      'La piattaforma segue Omnibus, VSME ed ESRS così rispondi con il tetto attuale, non con l\'Excel dell\'anno scorso.';
 
   @override
-  String get pubLandingFinalTitle =>
-      'Il momento migliore per iniziare era ieri. Il secondo migliore è adesso.';
+  String get pubLandingFinalTitle => 'Il cliente non aspetta il tuo Excel.';
 
   @override
   String get pubLandingFinalSub =>
-      'Ogni settimana persa riduce il vantaggio competitivo.';
+      'Ogni questionario inevaso è un rischio commerciale, non una sanzione di Bruxelles.';
 
   @override
   String get pubLandingFinalCta => 'Inizia la prova gratuita - 14 giorni';
 
   @override
   String get pubLandingStepsTitle =>
-      'Da zero a report ESG verificabile in 3 passi';
+      'Da zero al pacchetto VSME da inviare al cliente, in 3 passi';
 
   @override
   String get pubLandingStep1Title => 'Connetti i tuoi dati';
@@ -1632,10 +1634,11 @@ class AppLocalizationsIt extends AppLocalizations {
       'Scope 1, 2, 3 e indicatori ESG in automatico.';
 
   @override
-  String get pubLandingStep3Title => 'Genera il report';
+  String get pubLandingStep3Title => 'Genera il report VSME';
 
   @override
-  String get pubLandingStep3Body => 'PDF audit-ready CSRD/ESRS in un click.';
+  String get pubLandingStep3Body =>
+      'PDF pronto per clienti e banche, in un click.';
 
   @override
   String get pubCompareColFeature => 'Caratteristica';
@@ -1653,7 +1656,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get pubCompareRowTime => 'Tempo';
 
   @override
-  String get pubCompareRowAudit => 'Audit-ready';
+  String get pubCompareRowAudit => 'Pronto per il cliente';
 
   @override
   String get pubCompareCostConsultant => '15k-30k/anno';
@@ -1684,55 +1687,59 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get pubFeaturesGridTitle =>
-      'Tutto quello che ti serve per la compliance ESG';
+      'Quello che ti serve per rispondere alla cascata di filiera';
 
   @override
-  String get pubFeatureCarbon => 'Calcolo Carbon Footprint Automatico';
+  String get pubFeatureCarbon => 'Carbon accounting (Scope 1, 2, 3)';
 
   @override
-  String get pubFeatureStandards => 'Standard ESRS e VSME Integrati';
+  String get pubFeatureStandards =>
+      'Report VSME — il tetto legale della value chain';
 
   @override
-  String get pubFeaturePdf => 'Report PDF Audit-Ready';
+  String get pubFeaturePdf =>
+      'PDF pronto per il cliente, non una slide da consulente';
 
   @override
   String get pubFeatureBanking => 'Profilo Bancabilità ESG';
 
   @override
-  String get pubFeatureSupplyChain => 'Dashboard Supply Chain';
+  String get pubFeatureSupplyChain => 'Questionari clienti e dati fornitori';
 
   @override
-  String get pubFeatureAlerts => 'Alert Normativi';
+  String get pubFeatureAlerts => 'Aggiornamenti Omnibus e VSME';
 
   @override
   String get pubTimelineTitle =>
-      'La normativa non aspetta. Le scadenze sono reali.';
+      'L\'obbligo di legge si è ristretto. Le richieste dei clienti no.';
 
   @override
-  String get pubTimeline1Label => '2025 - ORA';
+  String get pubTimeline1Label => 'Marzo 2026';
 
   @override
   String get pubTimeline1Body =>
-      'Grandi imprese già soggette, supply chain coinvolta.';
+      'Entra in vigore l\'Omnibus I: soglie CSRD a 1.000 dipendenti e 450 M€ di fatturato.';
 
   @override
-  String get pubTimeline2Label => '2027 -> 2028';
+  String get pubTimeline2Label => 'FY 2027';
 
   @override
-  String get pubTimeline2Body => 'Grandi imprese non quotate: obbligo pieno.';
+  String get pubTimeline2Body =>
+      'La CSRD obbligatoria resta solo per i gruppi più grandi. Le PMI escono dal perimetro legale.';
 
   @override
-  String get pubTimeline3Label => '2028 -> 2029';
+  String get pubTimeline3Label => 'Value chain cap';
 
   @override
-  String get pubTimeline3Body => 'PMI quotate: reporting ESG strutturato.';
+  String get pubTimeline3Body =>
+      'I clienti grandi in genere non possono chiederti più del VSME se hai in media meno di 1.000 dipendenti.';
 
   @override
-  String get pubTimeline4Label => 'Sempre';
+  String get pubTimeline4Label => 'Oggi';
 
   @override
   String get pubTimeline4Body =>
-      'Se sei fornitore, i dati ESG sono richiesti dai clienti.';
+      'Procurement, banche e investitori chiedono già. Chi risponde in VSME tiene il contratto.';
 
   @override
   String get pubTestimonial1Name => 'Marco R.';
@@ -1818,7 +1825,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get contactPageSubtitle =>
-      'Domande su CSRD, reporting ESG o Verdai? Il team risponde entro un giorno lavorativo.';
+      'Domande su VSME, questionari clienti o Verdai? Il team risponde entro un giorno lavorativo.';
 
   @override
   String get contactCardSalesTitle => 'Vendite e piloti';
